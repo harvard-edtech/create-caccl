@@ -1,0 +1,27 @@
+{
+	"name": "create-caccl",
+	"version": "1.0.0",
+	"description": "Initializes a new caccl-based Canvas LTI app project.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/harvard-edtech/create-caccl.git"
+	},
+	"keywords": [
+		"CACCL",
+		"Initializer"
+	],
+	"author": "Gabriel Abrams <gabeabrams@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/harvard-edtech/create-caccl/issues"
+	},
+	"homepage": "https://github.com/harvard-edtech/create-caccl#readme",
+	"dependencies": {
+		"fs": "0.0.1-security",
+		"prompt-sync": "^4.1.6"
+	}
+}
