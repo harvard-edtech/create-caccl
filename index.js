@@ -37,12 +37,21 @@ module.exports = () => {
     console.log('');
     print.subtitle('NPM Project Init Wizard:')
     console.log('');
+
     try {
       exec('npm init');
     } catch (err) {
-      print.error('NPM initialization was aborted. Now quitting.');
+      // Fail if initialization was aborted
+      print.error('NPM project initialization was unsuccessful. Now quitting.');
       process.exit(0);
     }
+
+    // Fail if wizard was quit
+    if (!fs.existsSync(packageFilename)) {
+      print.error('NPM project initialization was cancelled. Now quitting.');
+      process.exit(0);
+    }
+
     console.log('\n');
     console.log('Great! Now we can initialize CACCL.\n\n');
   }
