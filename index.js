@@ -1,10 +1,13 @@
 const fs = require('fs');
+const path = require('path');
 const promptSync = require('prompt-sync')();
-const print = require('./print');
 
+// Import helpers
+const print = require('./print');
 const react = require('./react');
 const script = require('./script');
 
+// Create helpers and contstants
 const currDir = process.env.PWD;
 
 const prompt = (title, notRequired) => {
@@ -14,9 +17,9 @@ const prompt = (title, notRequired) => {
   }
   return val;
 };
-
 print.savePrompt(prompt);
 
+// Initializer script
 module.exports = () => {
   // Check if the current directory is an NPM project
   const packageFilename = path.join(currDir, 'package.json');
