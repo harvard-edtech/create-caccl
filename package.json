@@ -4,7 +4,7 @@
 	"description": "Initializes a new caccl-based Canvas LTI app project.",
 	"main": "index.js",
 	"bin": {
-		"create-caccl": "./index.js"
+		"create-caccl": "./init.js"
 	},
 	"scripts": {
 		"start": "node index.js"
