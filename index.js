@@ -1,6 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const promptSync = require('prompt-sync')();
+const execSync = require('child_process').execSync;
+
+// Prep command executor
+const exec = (command) => {
+  return execSync(command, {stdio: 'inherit'});
+};
 
 // Import helpers
 const print = require('./print');
@@ -24,9 +30,17 @@ module.exports = () => {
   // Check if the current directory is an NPM project
   const packageFilename = path.join(currDir, 'package.json');
   if (!fs.existsSync(packageFilename)) {
+    // Initialize npm project
+    print.title('Initialize NPM Project');
+    console.log('');
+    console.log('Before initializing CACCL, you need to initialize your npm project.');
+    console.log('');
+    print.subtitle('NPM Project Init Wizard:')
     console.log('\nOops! This is not an NPM project.\n');
     console.log('If you\'re sure you\'re in the right directory, run "npm init" to initialize your project first.\n');
-    process.exit(0);
+    exec('npm init');
+    console.log('\n');
+    console.log('Great! Now we can initialize CACCL.')
   }
 
   // Read in current package.json file
