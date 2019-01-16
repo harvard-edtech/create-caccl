@@ -17,4 +17,4 @@ if (majorVersion < 8) {
   return;
 }
 
-require('./index.js');
+require('./index.js')();
