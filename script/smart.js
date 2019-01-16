@@ -31,7 +31,7 @@ module.exports = (prompt, packageJSON) => {
   // Ask before continuing
   console.log('\n');
   print.subtitle('We are about to:');
-  console.log('- Create/overwrite init.js');
+  console.log('- Create/overwrite index.js');
   console.log('- Create/overwrite script.js');
   console.log('- Create a helpers/ folder and populate it with files:');
   console.log('   > "getAccessToken.js"');
@@ -100,7 +100,8 @@ module.exports = (prompt, packageJSON) => {
   if (!newPackageData.scripts) {
     newPackageData.scripts = {};
   }
-  newPackageData.scripts.start = 'node init.js';
+  newPackageData.main = 'index.js';
+  newPackageData.scripts.start = 'node index.js';
   fs.writeFileSync(packageJSON.filename, JSON.stringify(newPackageData, null, '\t'), 'utf-8');
 
   // 5. Create config files
@@ -160,12 +161,12 @@ module.exports = (prompt, packageJSON) => {
   });
 
   // 7. Create init.js
-  stepTitle('Creating init.js')
+  stepTitle('Creating index.js')
   const initBody = fs.readFileSync(
-    path.join(__dirname, 'smartFiles', 'init.js'),
+    path.join(__dirname, 'smartFiles', 'index.js'),
     'utf-8'
   );
-  fs.writeFileSync(path.join(currDir, 'init.js'), initBody, 'utf-8');
+  fs.writeFileSync(path.join(currDir, 'index.js'), initBody, 'utf-8');
 
   // 8. Create script.js
   stepTitle('Creating script.js')

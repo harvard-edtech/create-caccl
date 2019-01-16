@@ -39,7 +39,7 @@ module.exports = () => {
     console.log('');
     exec('npm init');
     console.log('\n');
-    console.log('Great! Now we can initialize CACCL.')
+    console.log('Great! Now we can initialize CACCL.\n\n');
   }
 
   // Read in current package.json file
