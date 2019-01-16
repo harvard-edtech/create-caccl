@@ -3,8 +3,11 @@
 	"version": "1.0.0",
 	"description": "Initializes a new caccl-based Canvas LTI app project.",
 	"main": "index.js",
+	"bin": {
+    "create-caccl": "./index.js"
+  },
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"start": "node index.js"
 	},
 	"repository": {
 		"type": "git",
