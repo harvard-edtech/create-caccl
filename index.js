@@ -3,6 +3,8 @@ const promptSync = require('prompt-sync')();
 const print = require('./print');
 
 const react = require('./react');
+const script = require('./script');
+
 const currDir = process.env.PWD;
 
 const prompt = (title, notRequired) => {
@@ -44,8 +46,9 @@ module.exports = () => {
   // Prompt for project type
   print.subtitle('Choose a CACCL project type:');
   console.log('1 - React + Express');
+  console.log('2 - Node.js Script');
   console.log('');
-  const type = prompt('project type: ');
+  const type = prompt('project type: ').toLowerCase();
 
   // Handle each type appropriately
   console.log('\n\n');
@@ -59,6 +62,16 @@ module.exports = () => {
     print.title('Initializing CACCL React + Express Project');
     console.log('\n');
     return react(prompt, packageJSON);
+  } else if (
+    type === '2'
+    || type === 's'
+    || type === 'node script'
+    || type === 'node.js script'
+    || type === 'nodejs script'
+  ) {
+    print.title('Initializing Node.js Script Project');
+    console.log('\n');
+    return script(prompt, packageJSON);
   } else {
     // Invalid type
     print.fatalError('Invalid project type');
