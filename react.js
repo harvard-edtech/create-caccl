@@ -226,7 +226,7 @@ const setUpDevEnvironment = (prompt) => {
     print.subtitle('Request a sandbox from your school\'s Canvas admin department.');
     console.log('');
     console.log('Do you have a sandbox right now?');
-    console.log('> If no, press ctrl+c and run this tool when you do');
+    console.log('> If no, press ctrl+c and re-run this tool when you do');
     console.log('> If yes, paste the link to it below');
     console.log('Example: https://canvas.harvard.edu/courses/538209');
   } else {

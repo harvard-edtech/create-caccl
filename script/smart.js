@@ -35,6 +35,7 @@ module.exports = (prompt, packageJSON) => {
   console.log('- Create/overwrite script.js');
   console.log('- Create a helpers/ folder and populate it with files:');
   console.log('   > "getAccessToken.js"');
+  console.log('   > "getCanvasHost.js"');
   console.log('   > "print.js"');
   console.log('   > "prompt.js"');
   console.log('- Create a config/ folder and populate it with files:');
