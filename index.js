@@ -42,14 +42,12 @@ module.exports = () => {
       exec('npm init');
     } catch (err) {
       // Fail if initialization was aborted
-      print.error('NPM project initialization was unsuccessful. Now quitting.');
-      process.exit(0);
+      print.fatalError('NPM project initialization was unsuccessful. Now quitting.');
     }
 
     // Fail if wizard was quit
     if (!fs.existsSync(packageFilename)) {
-      print.error('NPM project initialization was cancelled. Now quitting.');
-      process.exit(0);
+      print.fatalError('NPM project initialization was cancelled. Now quitting.');
     }
 
     console.log('\n');
