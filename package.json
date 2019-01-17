@@ -1,6 +1,6 @@
 {
 	"name": "create-caccl",
-	"version": "1.0.12",
+	"version": "1.0.13",
 	"description": "Initializes a new caccl-based Canvas LTI app project.",
 	"main": "index.js",
 	"bin": {
