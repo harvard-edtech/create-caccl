@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
 
-const print = require('./print');
+const print = require('../print');
 
 const exec = (command, print) => {
   return execSync(command, (
@@ -264,6 +264,7 @@ const setUpDevEnvironment = (prompt) => {
   console.log('g. Save the token in a secure location and paste it below:');
   console.log('');
   const accessToken = prompt('access token: ');
+  console.log('');
 
   const devEnvironment = (
     'module.exports = {\n'
@@ -293,7 +294,7 @@ const printEndMessage = () => {
   console.log('');
 
   print.subtitle('Starting Development Environment:');
-  console.log('After setting up your dev environment (see below),');
+  console.log('After setting up your dev environment,');
   console.log('1. Open 3 terminal windows, go to the root directory of the project in each');
   console.log('2. Run "npm run dev:canvas" in the first window');
   console.log('3. Run "npm run dev:server" in the second window');

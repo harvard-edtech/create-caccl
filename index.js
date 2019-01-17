@@ -10,7 +10,8 @@ const exec = (command) => {
 
 // Import helpers
 const print = require('./print');
-const react = require('./react');
+const react = require('./app/react');
+const ejs = require('./app/ejs');
 const script = require('./script');
 
 // Create helpers and contstants
@@ -75,6 +76,7 @@ module.exports = () => {
   print.subtitle('Choose a CACCL project type:');
   console.log('1 - React + Express');
   console.log('2 - Node.js Script');
+  console.log('3 - EJS + Express server-side app');
   console.log('');
   const type = prompt('project type: ').toLowerCase();
 
@@ -100,6 +102,15 @@ module.exports = () => {
     print.title('Initializing Node.js Script Project');
     console.log('\n');
     return script(prompt, packageJSON);
+  } else if (
+    type === '3'
+    || type === 'e'
+    || type === 'ejs'
+    || type === 'ejs+express'
+  ) {
+    print.title('Initializing EJS + Express server-side app project');
+    console.log('\n');
+    return ejs(prompt, packageJSON);
   } else {
     // Invalid type
     print.fatalError('Invalid project type');
