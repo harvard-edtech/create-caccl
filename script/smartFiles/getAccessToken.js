@@ -16,7 +16,7 @@ const verifyToken = (accessToken, canvasHost) => {
   return api.user.self.getProfile()
     .then((profile) => {
       console.log('');
-      print.subtitle(`Welcome, ${profile.name}`);
+      print.subtitle(`Are you ${profile.name}?`);
       console.log('If this is you, press enter.');
       console.log(`If you're not ${profile.name}, type "n" and press enter.`);
       console.log('');

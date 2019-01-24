@@ -30,13 +30,12 @@ module.exports = () => {
   // Verify saved Canvas host (if applicable)
   if (savedCanvasHost && savedCanvasHost.trim().length > 0) {
     // Verify with user
-    print.subtitle('Verify Canvas Host:');
-    print.centered(savedCanvasHost);
+    print.subtitle(`Is ${savedCanvasHost} your Canvas host?`);
     console.log('If this looks right, press enter.');
     console.log(`If ${savedCanvasHost} isn't your Canvas host, type "n" then press enter.`);
     const option = prompt('').trim();
     if (option !== 'n') {
-      return savedCanvasHost
+      return savedCanvasHost;
     }
   }
 

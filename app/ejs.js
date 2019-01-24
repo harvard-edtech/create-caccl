@@ -23,9 +23,12 @@ module.exports = (prompt, packageJSON) => {
 
   // Get Canvas host
   print.subtitle('Which Canvas host should your app connect to by default?');
-  print.centered('(e.g, canvas.harvard.edu)');
-  const canvasHost = prompt('canvasHost: ');
+  print.centered('e.g., canvas.harvard.edu or canvas.instructure.com');
+  const canvasHost = prompt('canvasHost: ').trim();
   console.log('\n\n');
+  if (canvasHost.length === 0) {
+    print.fatalError('No Canvas host provided. Now quitting.');
+  }
 
   // Ask before continuing
   print.subtitle('We are about to:');
@@ -261,13 +264,13 @@ module.exports = (app) => {
   const setUpDev = prompt('y/n: ', true);
 
   if (setUpDev === 'y') {
-    setUpDevEnvironment(prompt);
+    setUpDevEnvironment(canvasHost, prompt);
   } else {
     console.log('\nOkay. Re-run this tool if you ever need help setting up your dev environment.\n\nHave fun!');
   }
 };
 
-const setUpDevEnvironment = (prompt) => {
+const setUpDevEnvironment = (canvasHost, prompt) => {
   console.log('\n\n');
   print.title('Let\'s set up your dev environment.');
   console.log('');
@@ -275,42 +278,22 @@ const setUpDevEnvironment = (prompt) => {
   // Get Canvas host and course id
   print.subtitle('1. Get a Canvas test course');
   console.log('');
-  console.log('Does your institution have its own instance of Canvas?');
-  console.log('Example: canvas.harvard.edu');
-  let hasOwnHost;
-  while (hasOwnHost !== 'y' && hasOwnHost !== 'n') {
-    hasOwnHost = prompt('y/n: ', true);
-  }
-  hasOwnHost = (hasOwnHost === 'y');
+
+  print.subtitle('Do you have a sandbox Canvas course?');
+  console.log('> If no, get one from your Canvas admin, press ctrl+c, re-run this tool when you have one');
+  console.log('> If yes, paste the link to it below');
+  console.log(`Example: https://${canvasHost}/courses/538209`);
   console.log('');
 
-  print.subtitle('How to get a sandbox course:');
-  if (hasOwnHost) {
-    print.subtitle('Request a sandbox from your school\'s Canvas admin department.');
-    console.log('');
-    console.log('Do you have a sandbox right now?');
-    console.log('> If no, press ctrl+c and re-run this tool when you do');
-    console.log('> If yes, paste the link to it below');
-    console.log('Example: https://canvas.harvard.edu/courses/538209');
-  } else {
-    print.subtitle('Go to canvas.instructure.com, create an instructor account, and make a sandbox course.');
-    console.log('');
-    console.log('Once you have a sandbox, paste a link to it below:');
-    console.log('Example: https://canvas.instructure.com/courses/538209');
-  }
-
-  console.log('');
-  let canvasHost;
   let courseId;
-  while (!canvasHost || !courseId) {
+  while (!courseId) {
     const link = prompt('course link: ');
     try {
       const parts = link.split('/');
-      canvasHost = parts[2];
       courseId = parseInt(parts[4], 10);
     } catch (err) {
-      canvasHost = null;
       courseId = null;
+      console.log('Invalid course link. Please try again\n');
     }
   }
 

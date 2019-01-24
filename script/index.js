@@ -12,7 +12,7 @@ module.exports = (prompt, packageJSON) => {
 
   print.subtitle('Choose a script type:');
   console.log('1 - Basic: credentials stored in config and must be changed manually');
-  console.log('2 - Smart: script asks user for credentials, verifies user\'s identity, and automatically stores credentials in config');
+  console.log('2 - Smart: wizard asks user for credentials on first launch, stores credentials, and confirms credentials on subsequent launches');
   console.log('');
   const type = prompt('type: ');
   if (type !== '1' && type !== '2') {
