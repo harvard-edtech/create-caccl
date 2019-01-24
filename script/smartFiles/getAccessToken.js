@@ -24,8 +24,7 @@ const verifyToken = (accessToken, canvasHost) => {
       return (response !== 'n');
     })
     .catch((err) => {
-      console.log(err, err.message, err.code);
-      print.error('Oops! This access token is invalid.');
+      print.error('Access token or Canvas host is invalid.');
       return false;
     });
 };

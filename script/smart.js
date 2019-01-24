@@ -22,11 +22,9 @@ module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/
 
   // Canvas host
-  print.subtitle('Add Canvas Host:');
-  console.log('Which Canvas host should your app connect with by default?');
-  console.log('Example: canvas.harvard.edu')
-  console.log('');
-  const canvasHost = prompt('canvasHost (optional): ');
+  print.subtitle('Which Canvas host should your app connect to by default?');
+  print.centered('e.g. canvas.harvard.edu or canvas.instructure.com');
+  const canvasHost = prompt('canvasHost: ').trim();
 
   // Ask before continuing
   console.log('\n');
