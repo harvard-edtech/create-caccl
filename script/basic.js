@@ -177,7 +177,7 @@ module.exports = async (api) => {
     // Print hello world message
     console.log(\`Hi \${profile.name}, it's a pleasure to meet you.\`);
     console.log('This is your CACCL hello world app!\n');
-    console.log('Edit "index.js" and run "npm start"');
+    console.log('Edit "script.js" and run "npm start"');
   } catch (err) {
     console.log('Oops! An error occurred:', err.message, err.code);
   }
@@ -192,7 +192,7 @@ module.exports = async (api) => {
   console.log('\n');
 
   print.subtitle('Creating your script:');
-  console.log('- Edit index.js');
+  console.log('- Edit script.js');
   console.log('- Visit the caccl-api project on npm for api documentation');
   console.log('');
 
