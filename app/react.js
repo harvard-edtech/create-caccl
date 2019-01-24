@@ -32,16 +32,30 @@ module.exports = (prompt, packageJSON) => {
     // Already initialized
     if (fs.existsSync(path.join(currDir, 'config', 'devEnvironment.js'))) {
       // Everything already set up
-      print.fatalError('Project already set up! To re-init, remove client/');
+      print.fatalError('Project already set up!');
     }
-    // We can try setting up dev environment now
-    print.subtitle('Project already set up!');
-    print.centered('...but you haven\'t set up your dev environment. Do that now?');
-    const setUpDev = prompt('y/n: ');
-    if (setUpDev === 'y') {
-      setUpDevEnvironment(canvasHost, prompt);
+
+    try {
+      const canvasDefaults = require(
+        path.join(currDir, 'config', 'canvasDefaults.js')
+      );
+      // Canvas defaults exist
+      if (!canvasDefaults || !canvasDefaults.canvasHost) {
+        throw new Error('invalid canvasDefaults');
+      }
+
+      // We can try setting up dev environment now
+      print.subtitle('Project already set up!');
+      print.centered('...but you haven\'t set up your dev environment. Do that now?');
+      const setUpDev = prompt('y/n: ');
+      if (setUpDev === 'y') {
+        setUpDevEnvironment(canvasDefaults.canvasHost, prompt);
+      }
+      process.exit(0);
+    } catch (err) {
+      // No canvas defaults!
+      print.fatalError('This project is invalid. Please re-initialize it.');
     }
-    process.exit(0);
   }
 
   // Get Canvas host
@@ -196,8 +210,9 @@ const app = initCACCL({
   // Print finish message
   console.log('\n\n');
   print.title('Done! React + Express Project Created');
-  console.log('\n');
+  console.log('');
   print.enterToContinue();
+  console.log('');
 
   printEndMessage();
 
