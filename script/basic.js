@@ -160,6 +160,8 @@ const api = initCACCL({
 api.user.self.getProfile()
   .then((profile) => {
     console.log(\`Hi \${profile.name}, it's a pleasure to meet you.\`);
+    console.log('This is your CACCL hello world app!\n');
+    console.log('Edit "index.js" and run "npm start"');
   })
   .catch((err) => {
     console.log('Oops! An error occurred!', err.message);
