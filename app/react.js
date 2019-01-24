@@ -39,7 +39,7 @@ module.exports = (prompt, packageJSON) => {
     print.centered('...but you haven\'t set up your dev environment. Do that now?');
     const setUpDev = prompt('y/n: ');
     if (setUpDev === 'y') {
-      setUpDevEnvironment(prompt);
+      setUpDevEnvironment(canvasHost, prompt);
     }
     process.exit(0);
   }
@@ -197,6 +197,7 @@ const app = initCACCL({
   console.log('\n\n');
   print.title('Done! React + Express Project Created');
   console.log('\n');
+  print.enterToContinue();
 
   printEndMessage();
 
@@ -224,12 +225,9 @@ const setUpDevEnvironment = (canvasHost, prompt) => {
   print.title('Let\'s set up your dev environment.');
   console.log('');
 
-  // Get Canvas host and course id
-  print.subtitle('1. Get a Canvas test course');
-  console.log('');
-
+  // Get course id
   print.subtitle('Do you have a sandbox Canvas course?');
-  console.log('> If no, get one from your Canvas admin, press ctrl+c, re-run this tool when you have one');
+  console.log('> If no, hit ctrl+c, get one from your Canvas admin, then re-run this tool');
   console.log('> If yes, paste the link to it below');
   console.log(`Example: https://${canvasHost}/courses/538209`);
   console.log('');
@@ -247,18 +245,15 @@ const setUpDevEnvironment = (canvasHost, prompt) => {
   }
 
   // Get access token
-  print.subtitle('2. Get a Canvas access token');
-  console.log('Recommendation: create a "fake" user, add them to your course, then perform the following steps as that user. Your personal token may have higher privileges than a typical user (with your token, the app can do more damage). Using a "fake" user limits this risk.');
+  print.subtitle('What\'s your Canvas access token?');
+  console.log('Recommendation: make a "fake" user, add them to your course, then perform the following steps as that user. Your may have higher privileges than a typical user (with your token, the app can do more damage). Using a "fake" user limits this risk.');
   console.log('');
-  console.log('a. Log into Canvas, click the user picture (top left)');
-  console.log('b. Click "Settings"');
-  console.log('c. Scroll down and click "+ New Access Token"');
-  console.log('d. Set the purpose to: "Dev Environment for <App Name>"');
-  console.log('e. Leave the expiry blank');
-  console.log('f. Click "Generate Token"');
-  console.log('g. Save the token in a secure location and paste it below:');
+  console.log('1. Log into Canvas, click the user picture (top left), click "Settings"');
+  console.log('2. Scroll down and click "+ New Access Token"');
+  console.log('3. Set purpose to "Dev Environment for <App Name>", leave expiry blank');
+  console.log('4. Click "Generate Token"');
   console.log('');
-  const accessToken = prompt('access token: ');
+  const accessToken = prompt('accessToken: ');
   console.log('');
 
   const devEnvironment = (
