@@ -50,6 +50,7 @@ module.exports = (prompt, packageJSON) => {
   // Ask before continuing
   print.subtitle('We are about to:');
   console.log('- Create/overwrite index.js');
+  console.log('- Create/overwrite script.js');
   console.log('- Create a config/ folder and populate it with files:');
   console.log('   > "accessToken.js"');
   console.log('   > "canvasDefaults.js"');
@@ -69,7 +70,7 @@ module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/
 
   // Title printer
-  const numSteps = 6;
+  const numSteps = 7;
   let stepIndex = 1;
   const stepTitle = (title) => {
     const progressBar = (
@@ -138,13 +139,16 @@ module.exports = (prompt, packageJSON) => {
 
   // 6. Create index.js
   stepTitle('Creating index.js')
-  const body = (
+  const indexBody = (
 `const initCACCL = require('caccl/script');
 const fs = require('fs');
 const path = require('path');
 
 // Import configuration files
 const canvasDefaults = require('./config/canvasDefaults');
+
+// Import script
+const script = require('./script');
 
 // Get access token
 const accessTokenPath = path.join(__dirname, 'config', 'accessToken.js');
@@ -156,19 +160,31 @@ const api = initCACCL({
   canvasHost: canvasDefaults.canvasHost,
 });
 
-// TODO: Replace example content:
-api.user.self.getProfile()
-  .then((profile) => {
+// Run the script
+script(api);
+`
+  );
+  fs.writeFileSync(path.join(currDir, 'index.js'), indexBody, 'utf-8');
+
+  // 7. Create script.js
+  const scriptBody = (
+`
+module.exports = async (api) => {
+  try {
+    // Get user's profile from Canvas
+    const profile = await api.user.self.getProfile();
+
+    // Print hello world message
     console.log(\`Hi \${profile.name}, it's a pleasure to meet you.\`);
     console.log('This is your CACCL hello world app!\n');
     console.log('Edit "index.js" and run "npm start"');
-  })
-  .catch((err) => {
-    console.log('Oops! An error occurred!', err.message);
-  });
+  } catch (err) {
+    console.log('Oops! An error occurred:', err.message, err.code);
+  }
+};
 `
   );
-  fs.writeFileSync(path.join(currDir, 'index.js'), body, 'utf-8');
+  fs.writeFileSync(path.join(currDir, 'script.js'), scriptBody, 'utf-8');
 
   // Print finish message
   console.log('\n\n');
