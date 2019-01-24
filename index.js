@@ -36,7 +36,9 @@ module.exports = () => {
     console.log('');
     console.log('Before initializing CACCL, you need to initialize your npm project.');
     console.log('');
-    print.subtitle('NPM Project Init Wizard:')
+    print.enterToContinue();
+    console.log('');
+    console.log('NPM Project Init Wizard:');
     console.log('');
 
     try {
