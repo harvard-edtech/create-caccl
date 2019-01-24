@@ -7,7 +7,7 @@ const execSync = require('child_process').execSync;
 // Import helpers
 const getCanvasHost = require('../helpers/getCanvasHost');
 const getAccessToken = require('../helpers/getAccessToken');
-
+const copyTo = require('../helpers/copyTo');
 const print = require('../helpers/print');
 
 const exec = (command, print) => {
@@ -132,14 +132,17 @@ module.exports = (prompt, packageJSON) => {
 
   // 6. Create index.js
   stepTitle('Creating index.js')
-  const indexPath = path.join(__dirname, 'basicFiles', 'index.js');
-  const indexBody = fs.readFileSync(indexPath, 'utf-8');
-  fs.writeFileSync(path.join(currDir, 'index.js'), indexBody, 'utf-8');
+  copyTo(
+    path.join(__dirname, 'basicFiles', 'index.js'),
+    path.join(currDir, 'index.js')
+  );
 
   // 7. Create script.js
-  const scriptPath = path.join(__dirname, 'basicFiles', 'script.js');
-  const scriptBody = fs.readFileSync(scriptPath, 'utf-8');
-  fs.writeFileSync(path.join(currDir, 'script.js'), scriptBody, 'utf-8');
+  stepTitle('Creating script.js');
+  copyTo(
+    path.join(__dirname, 'basicFiles', 'script.js'),
+    path.join(currDir, 'script.js')
+  );
 
   // Print finish message
   console.log('\n\n');

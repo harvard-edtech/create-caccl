@@ -6,6 +6,7 @@ const execSync = require('child_process').execSync;
 
 // Import helpers
 const getCanvasHost = require('../helpers/getCanvasHost');
+const copyTo = require('../helpers/copyTo');
 
 const print = require('../helpers/print');
 
@@ -20,10 +21,6 @@ const exec = (command, print) => {
 
 // Determine current working directory
 const currDir = process.env.PWD;
-
-// Read in App.js
-const appJsResourcePath = path.join(__dirname, 'resources', 'App.js');
-const appJsContents = fs.readFileSync(appJsResourcePath, 'utf-8');
 
 module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/
@@ -185,27 +182,18 @@ module.exports = (prompt, packageJSON) => {
 
   // 6. Create index.js
   stepTitle('Creating index.js')
-  fs.writeFileSync(path.join(currDir, 'index.js'), (
-`// Import CACCL
-const initCACCL = require('caccl/server/react');
-
-// Import configuration files
-const developerCredentials = require('./config/developerCredentials');
-const installationCredentials = require('./config/installationCredentials');
-const canvasDefaults = require('./config/canvasDefaults');
-
-// Initialize CACCL
-const app = initCACCL({
-  developerCredentials,
-  installationCredentials,
-  canvasHost: canvasDefaults.canvasHost,
-});`
-  ), 'utf-8');
+  copyTo(
+    path.join(__dirname, 'reactFiles', 'index.js'),
+    path.join(currDir, 'index.js')
+  );
 
   // 7. Replace App.js
   stepTitle('Replacing client/src/App.js with "hello world" app');
-  const appJsPath = path.join(currDir, 'client', 'src', 'App.js');
-  fs.writeFileSync(appJsPath, appJsContents, 'utf-8');
+  // Read in App.js
+  copyTo(
+    path.join(__dirname, 'reactFiles', 'App.js'),
+    path.join(currDir, 'client', 'src', 'App.js')
+  );
 
   // Print finish message
   console.log('\n\n');

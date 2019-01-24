@@ -6,7 +6,7 @@ const execSync = require('child_process').execSync;
 
 // Import helpers
 const getCanvasHost = require('../helpers/getCanvasHost');
-
+const copyTo = require('../helpers/copyTo');
 const print = require('../helpers/print');
 
 const exec = (command, print) => {
@@ -126,55 +126,36 @@ module.exports = (prompt, packageJSON) => {
   exec('mkdir -p helpers');
 
   // Create scripts
-  [
-    {
-      filename: 'getAccessToken.js',
-      data: fs.readFileSync(
-        path.join(__dirname, 'smartFiles', 'getAccessToken.js'),
-        'utf-8'
-      ),
-    },
-    {
-      filename: 'getCanvasHost.js',
-      data: fs.readFileSync(
-        path.join(__dirname, 'smartFiles', 'getCanvasHost.js'),
-        'utf-8'
-      ),
-    },
-    {
-      filename: 'print.js',
-      data: fs.readFileSync(
-        path.join(__dirname, 'smartFiles', 'print.js'),
-        'utf-8'
-      )
-    },
-    {
-      filename: 'prompt.js',
-      data: fs.readFileSync(
-        path.join(__dirname, 'smartFiles', 'prompt.js'),
-        'utf-8'
-      )
-    },
-  ].forEach((file) => {
-    const filename = path.join(currDir, 'helpers', file.filename);
-    fs.writeFileSync(filename, file.data, 'utf-8');
-  });
+  copyTo(
+    path.join(__dirname, 'smartFiles', 'getAccessToken.js'),
+    path.join(currDir, 'helpers', 'getAccessToken.js')
+  );
+  copyTo(
+    path.join(__dirname, 'smartFiles', 'getCanvasHost.js'),
+    path.join(currDir, 'helpers', 'getCanvasHost.js')
+  );
+  copyTo(
+    path.join(__dirname, 'smartFiles', 'print.js'),
+    path.join(currDir, 'helpers', 'print.js')
+  );
+  copyTo(
+    path.join(__dirname, 'smartFiles', 'prompt.js'),
+    path.join(currDir, 'helpers', 'prompt.js')
+  );
 
   // 7. Create init.js
   stepTitle('Creating index.js')
-  const initBody = fs.readFileSync(
+  copyTo(
     path.join(__dirname, 'smartFiles', 'index.js'),
-    'utf-8'
+    path.join(currDir, 'index.js')
   );
-  fs.writeFileSync(path.join(currDir, 'index.js'), initBody, 'utf-8');
 
   // 8. Create script.js
   stepTitle('Creating script.js')
-  const scriptBody = fs.readFileSync(
+  copyTo(
     path.join(__dirname, 'smartFiles', 'script.js'),
-    'utf-8'
+    path.join(currDir, 'script.js')
   );
-  fs.writeFileSync(path.join(currDir, 'script.js'), scriptBody, 'utf-8');
 
   // Print finish message
   console.log('\n\n');

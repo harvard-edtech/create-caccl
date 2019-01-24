@@ -7,6 +7,7 @@ const execSync = require('child_process').execSync;
 // Import helpers
 const getCanvasHost = require('../helpers/getCanvasHost');
 const getAccessToken = require('../helpers/getAccessToken');
+const copyTo = require('../helpers/copyTo');
 
 const print = require('../helpers/print');
 
@@ -152,71 +153,17 @@ module.exports = (prompt, packageJSON) => {
 
   // 6. Create index.js
   stepTitle('Creating index.js')
-  fs.writeFileSync(path.join(currDir, 'index.js'), (
-`const initCACCL = require('caccl/server');
-const ejs = require('ejs');
-const path = require('path');
-
-// Import routes
-const initRoutes = require('./routes');
-
-// Import configuration files
-const developerCredentials = require('./config/developerCredentials');
-const installationCredentials = require('./config/installationCredentials');
-const canvasDefaults = require('./config/canvasDefaults');
-
-// Use Canvas simulation if running dev
-const canvasHost = (
-  process.env.DEV
-    ? 'localhost:8088'
-    : canvasDefaults.canvasHost
-);
-
-// Initialize CACCL
-const app = initCACCL({
-  developerCredentials,
-  installationCredentials,
-  canvasHost,
-  port: process.env.PORT || 443,
-});
-
-// Set EJS as the view manager
-app.set('view engine', 'ejs');
-
-// Initialize routes
-initRoutes(app);
-`
-  ), 'utf-8');
+  copyTo(
+    path.join(__dirname, 'ejsFiles', 'index.js'),
+    path.join(currDir, 'index.js')
+  );
 
   // 7. Create routes.js
   stepTitle('Creating routes.js')
-  fs.writeFileSync(path.join(currDir, 'routes.js'), (
-`const path = require('path');
-
-module.exports = (app) => {
-  // TODO: replace placeholder content
-  app.get('/', (req, res) => {
-    if (!req.api) {
-      // Not logged in
-      return res.send('Please launch this app via Canvas.');
-    }
-
-    // Get user profile
-    req.api.user.self.getProfile()
-      .then((profile) => {
-        // Render the index page
-        return res.render(path.join(__dirname, 'views', 'index'), {
-          name: profile.name,
-        });
-      })
-      .catch((err) => {
-        return res.send(\`An error occurred: \${err.message}\`);
-      });
-  });
-};
-  `
-  ), 'utf-8');
-
+  copyTo(
+    path.join(__dirname, 'ejsFiles', 'routes.js'),
+    path.join(currDir, 'routes.js')
+  );
 
   // 8. Create views
 
@@ -224,26 +171,10 @@ module.exports = (app) => {
   exec('mkdir -p views');
 
   // Create views/index.ejs
-  const filename = path.join(currDir, 'views', 'index.ejs');
-  const indexBody = (
-`<head>
-  <title>Test App</title>
-
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-</head>
-<body>
-  <div class="text-center p-2">
-    <div class="alert alert-info d-inline-block">
-      <h3>It's great to meet you, <%= name %>!</h3>
-      <p class="lead m-0">
-        Start by editing routes.js and views/index.ejs.
-      </p>
-    </div>
-  </div>
-</body>
-`
+  copyTo(
+    path.join(__dirname, 'ejsFiles', 'index.ejs'),
+    path.join(currDir, 'views', 'index.ejs')
   );
-  fs.writeFileSync(filename, indexBody, 'utf-8');
 
   // Print finish message
   console.log('\n\n');
