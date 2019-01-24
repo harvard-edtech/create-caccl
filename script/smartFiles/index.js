@@ -10,10 +10,10 @@ const getCanvasHost = require('./helpers/getCanvasHost');
 const getAccessToken = require('./helpers/getAccessToken');
 
 // Get canvas host
-const canvasHost = getCanvasHost(prompt);
+const canvasHost = getCanvasHost();
 
 // Get access token, initialize CACCL, then run script
-getAccessToken(promptcanvasHost)
+getAccessToken(canvasHost)
   .then((accessToken) => {
     // Initialize CACCL
     const api = initCACCL({
