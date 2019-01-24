@@ -1,11 +1,13 @@
-module.exports = (api) => {
-  // TODO: replace example script below
+module.exports = async (api) => {
 
-  api.user.self.getProfile()
-    .then((profile) => {
-      console.log(`Hi ${profile.name}, enjoy programming with CACCL!`);
-    })
-    .catch((err) => {
-      console.log('An error occurred:', err.message, err.code);
-    });
+  // TODO: replace hello world script below
+  try {
+    const profile = await api.user.self.getProfile();
+    console.log(`Hi ${profile.name}, this is your "hello world" script!`);
+    console.log('Edit "script.js" then run "npm start"\n');
+    console.log('Enjoy programming with CACCL!');
+  } catch (err) {
+    console.log('An error occurred:', err.message, err.code);
+  }
+
 };

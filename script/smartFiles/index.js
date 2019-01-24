@@ -11,15 +11,18 @@ const getAccessToken = require('./helpers/getAccessToken');
 
 // Get canvas host
 const canvasHost = getCanvasHost();
-getAccessToken(canvasHost).then((accessToken) => {
-  // Initialize CACCL
-  const api = initCACCL({
-    accessToken,
-    canvasHost,
+
+// Get access token, initialize CACCL, then run script
+getAccessToken(canvasHost)
+  .then((accessToken) => {
+    // Initialize CACCL
+    const api = initCACCL({
+      accessToken,
+      canvasHost,
+    });
+
+    console.log('\n\n');
+
+    // Call script
+    script(api);
   });
-
-  console.log('\n\n');
-
-  // Call script
-  script(api);
-});
