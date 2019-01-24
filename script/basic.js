@@ -4,6 +4,10 @@ const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
 
+// Import helpers
+const getCanvasHost = require('../inputHelpers/getCanvasHost');
+const getAccessToken = require('../inputHelpers/getAccessToken');
+
 const print = require('../print');
 
 const exec = (command, print) => {
@@ -21,31 +25,20 @@ module.exports = (prompt, packageJSON) => {
   /*                               Preparation                              */
   /*------------------------------------------------------------------------*/
 
-  // Access token
   console.log('');
-  print.subtitle('What\'s your Canvas access token?');
-  console.log('Recommendation: add a "fake" user to your course and do the following as that user. You may have more privileges than typical users (the app can do more damage with your token). Using a "fake" user limits this risk.');
-  console.log('');
-  console.log('1. Log into Canvas, click the user picture (top left), click "Settings"');
-  console.log('2. Scroll down and click "+ New Access Token"');
-  console.log('3. Set purpose to "Dev Environment for <App Name>", leave expiry blank');
-  console.log('4. Click "Generate Token"');
-  console.log('');
-  const accessToken = prompt('accessToken: ');
-  console.log('');
-  if (!accessToken || accessToken.trim().length === 0) {
-    print.fatalError('Invalid accessToken. Now quitting.');
-  }
 
   // Get Canvas host
-  print.subtitle('Which Canvas host should your app connect to by default?');
-  print.centered('e.g. canvas.harvard.edu or canvas.instructure.com');
-  const canvasHost = prompt('canvasHost: ').trim();
-  console.log('\n\n');
+  const canvasHost = getCanvasHost();
   if (canvasHost.length === 0) {
     print.fatalError('No Canvas host provided. Now quitting.');
   }
   console.log('');
+
+  // Access token
+  const accessToken = getAccessToken();
+  if (!accessToken || accessToken.trim().length === 0) {
+    print.fatalError('Invalid accessToken. Now quitting.');
+  }
 
   // Ask before continuing
   print.subtitle('We are about to:');
@@ -191,7 +184,7 @@ module.exports = async (api) => {
   print.title('Done! Node.js Basic Script Project Created');
   console.log('\n');
 
-  print.subtitle('Creating your script:');
+  print.subtitle('Editing your script:');
   console.log('- Edit script.js');
   console.log('- Visit the caccl-api project on npm for api documentation');
   console.log('');

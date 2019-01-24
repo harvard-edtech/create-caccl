@@ -4,6 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
 
+// Import helpers
+const getCanvasHost = require('../inputHelpers/getCanvasHost');
+
 const print = require('../print');
 
 const exec = (command, print) => {
@@ -22,9 +25,7 @@ module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/
 
   // Canvas host
-  print.subtitle('Which Canvas host should your app connect to by default?');
-  print.centered('e.g. canvas.harvard.edu or canvas.instructure.com');
-  const canvasHost = prompt('canvasHost: ').trim();
+  const canvasHost = getCanvasHost();
 
   // Ask before continuing
   console.log('\n');

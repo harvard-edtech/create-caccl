@@ -72,6 +72,7 @@ module.exports = {
     });
   },
   fatalError: (err) => {
+    console.log('\n');
     const errLine1 = err.substring(0, W - 6);
     const errLine2 = err.substring(W - 6);
     console.log('\u2554' + '\u2550'.repeat(3) + '\u2557 ');
