@@ -1,4 +1,6 @@
-module.exports = () => {
+const print = require('./print');
+
+module.exports = (prompt) => {
   // Get Canvas host
   print.subtitle('Which Canvas host should your app connect to by default?');
   print.centered('e.g. canvas.harvard.edu or canvas.instructure.com');

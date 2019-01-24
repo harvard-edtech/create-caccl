@@ -1,4 +1,6 @@
-module.exports = () => {
+const print = require('./print');
+
+module.exports = (prompt) => {
   // Get access token
   print.subtitle('What\'s your Canvas access token?');
   console.log('Recommendation: add a "fake" user to your course and do the following as that user. You may have more privileges than typical users (the app can do more damage with your token). Using a "fake" user limits this risk.');

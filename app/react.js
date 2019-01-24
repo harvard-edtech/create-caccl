@@ -5,9 +5,9 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 
 // Import helpers
-const getCanvasHost = require('../inputHelpers/getCanvasHost');
+const getCanvasHost = require('../helpers/getCanvasHost');
 
-const print = require('../print');
+const print = require('../helpers/print');
 
 // Set up bash command execution
 const exec = (command, print) => {
@@ -62,7 +62,7 @@ module.exports = (prompt, packageJSON) => {
   }
 
   // Get Canvas host
-  const canvasHost = getCanvasHost();
+  const canvasHost = getCanvasHost(prompt);
   if (canvasHost.length === 0) {
     print.fatalError('No Canvas host provided. Now quitting.');
   }

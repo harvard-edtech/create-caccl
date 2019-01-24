@@ -5,10 +5,10 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 
 // Import helpers
-const getCanvasHost = require('../inputHelpers/getCanvasHost');
-const getAccessToken = require('../inputHelpers/getAccessToken');
+const getCanvasHost = require('../helpers/getCanvasHost');
+const getAccessToken = require('../helpers/getAccessToken');
 
-const print = require('../print');
+const print = require('../helpers/print');
 
 const exec = (command, print) => {
   return execSync(command, (
@@ -28,14 +28,14 @@ module.exports = (prompt, packageJSON) => {
   console.log('');
 
   // Get Canvas host
-  const canvasHost = getCanvasHost();
+  const canvasHost = getCanvasHost(prompt);
   if (canvasHost.length === 0) {
     print.fatalError('No Canvas host provided. Now quitting.');
   }
   console.log('');
 
   // Access token
-  const accessToken = getAccessToken();
+  const accessToken = getAccessToken(prompt);
   if (!accessToken || accessToken.trim().length === 0) {
     print.fatalError('Invalid accessToken. Now quitting.');
   }
@@ -132,51 +132,13 @@ module.exports = (prompt, packageJSON) => {
 
   // 6. Create index.js
   stepTitle('Creating index.js')
-  const indexBody = (
-`const initCACCL = require('caccl/script');
-const fs = require('fs');
-const path = require('path');
-
-// Import configuration files
-const canvasDefaults = require('./config/canvasDefaults');
-
-// Import script
-const script = require('./script');
-
-// Get access token
-const accessTokenPath = path.join(__dirname, 'config', 'accessToken.js');
-const accessToken = fs.readFileSync(accessTokenPath, 'utf-8');
-
-// Initialize CACCL
-const api = initCACCL({
-  accessToken,
-  canvasHost: canvasDefaults.canvasHost,
-});
-
-// Run the script
-script(api);
-`
-  );
+  const indexPath = path.join(__dirname, 'basicFiles', 'index.js');
+  const indexBody = fs.readFileSync(indexPath, 'utf-8');
   fs.writeFileSync(path.join(currDir, 'index.js'), indexBody, 'utf-8');
 
   // 7. Create script.js
-  const scriptBody = (
-`
-module.exports = async (api) => {
-  try {
-    // Get user's profile from Canvas
-    const profile = await api.user.self.getProfile();
-
-    // Print hello world message
-    console.log(\`Hi \${profile.name}, it's a pleasure to meet you.\`);
-    console.log('This is your CACCL hello world app!\n');
-    console.log('Edit "script.js" and run "npm start"');
-  } catch (err) {
-    console.log('Oops! An error occurred:', err.message, err.code);
-  }
-};
-`
-  );
+  const scriptPath = path.join(__dirname, 'basicFiles', 'script.js');
+  const scriptBody = fs.readFileSync(scriptPath, 'utf-8');
   fs.writeFileSync(path.join(currDir, 'script.js'), scriptBody, 'utf-8');
 
   // Print finish message

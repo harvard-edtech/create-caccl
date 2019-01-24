@@ -5,9 +5,9 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 
 // Import helpers
-const getCanvasHost = require('../inputHelpers/getCanvasHost');
+const getCanvasHost = require('../helpers/getCanvasHost');
 
-const print = require('../print');
+const print = require('../helpers/print');
 
 const exec = (command, print) => {
   return execSync(command, (
@@ -25,7 +25,7 @@ module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/
 
   // Canvas host
-  const canvasHost = getCanvasHost();
+  const canvasHost = getCanvasHost(prompt);
 
   // Ask before continuing
   console.log('\n');

@@ -5,10 +5,10 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 
 // Import helpers
-const getCanvasHost = require('../inputHelpers/getCanvasHost');
-const getAccessToken = require('../inputHelpers/getAccessToken');
+const getCanvasHost = require('../helpers/getCanvasHost');
+const getAccessToken = require('../helpers/getAccessToken');
 
-const print = require('../print');
+const print = require('../helpers/print');
 
 const exec = (command, print) => {
   return execSync(command, (
@@ -26,7 +26,7 @@ module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/
 
   // Get Canvas host
-  const canvasHost = getCanvasHost();
+  const canvasHost = getCanvasHost(prompt);
   if (canvasHost.length === 0) {
     print.fatalError('No Canvas host provided. Now quitting.');
   }
@@ -299,7 +299,7 @@ const setUpDevEnvironment = (canvasHost, prompt) => {
   console.log('');
 
   // Get access token
-  const accessToken = getAccessToken();
+  const accessToken = getAccessToken(prompt);
 
   const devEnvironment = (
     'module.exports = {\n'

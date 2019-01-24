@@ -3,7 +3,7 @@
 const basic = require('./basic');
 const smart = require('./smart');
 
-const print = require('../print');
+const print = require('../helpers/print');
 
 module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/

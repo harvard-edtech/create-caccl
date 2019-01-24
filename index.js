@@ -9,7 +9,7 @@ const exec = (command) => {
 };
 
 // Import helpers
-const print = require('./print');
+const print = require('./helpers/print');
 const react = require('./app/react');
 const ejs = require('./app/ejs');
 const script = require('./script');
