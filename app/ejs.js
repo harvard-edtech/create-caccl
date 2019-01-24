@@ -23,7 +23,7 @@ module.exports = (prompt, packageJSON) => {
 
   // Get Canvas host
   print.subtitle('Which Canvas host should your app connect to by default?');
-  print.centered('e.g., canvas.harvard.edu or canvas.instructure.com');
+  print.centered('e.g. canvas.harvard.edu or canvas.instructure.com');
   const canvasHost = prompt('canvasHost: ').trim();
   console.log('\n\n');
   if (canvasHost.length === 0) {
@@ -247,8 +247,9 @@ module.exports = (app) => {
   // Print finish message
   console.log('\n\n');
   print.title('Done! EJS + Express Project Created');
-  console.log('\n');
+  console.log('');
   print.enterToContinue();
+  console.log('');
 
   printEndMessage();
 
