@@ -23,27 +23,27 @@ module.exports = (prompt, packageJSON) => {
 
   // Access token
   console.log('');
-  print.subtitle('Add Access Token:')
-  console.log('To interact with Canvas, your script needs an access token.');
-  console.log('- How to generate one:');
-  console.log('   1. In Canvas, click: your picture (top left)');
-  console.log('   2. Click "Settings"');
-  console.log('   3. Click "+ New Access Token"');
-  console.log('- You can always change this token by editing config/accessToken.txt');
+  print.subtitle('What\'s your Canvas access token?');
+  console.log('Recommendation: add a "fake" user to your course and do the following as that user. You may have more privileges than typical users (the app can do more damage with your token). Using a "fake" user limits this risk.');
+  console.log('');
+  console.log('1. Log into Canvas, click the user picture (top left), click "Settings"');
+  console.log('2. Scroll down and click "+ New Access Token"');
+  console.log('3. Set purpose to "Dev Environment for <App Name>", leave expiry blank');
+  console.log('4. Click "Generate Token"');
   console.log('');
   const accessToken = prompt('accessToken: ');
+  console.log('');
   if (!accessToken || accessToken.trim().length === 0) {
     print.fatalError('Invalid accessToken. Now quitting.');
   }
 
-  // Canvas host
-  print.subtitle('Add Canvas Host:');
-  console.log('Which Canvas host should your app connect with by default?');
-  console.log('Example: canvas.harvard.edu')
-  console.log('');
-  const canvasHost = prompt('canvasHost: ');
-  if (!canvasHost || canvasHost.trim().length === 0) {
-    print.fatalError('Invalid canvasHost. Now quitting.');
+  // Get Canvas host
+  print.subtitle('Which Canvas host should your app connect to by default?');
+  print.centered('e.g. canvas.harvard.edu or canvas.instructure.com');
+  const canvasHost = prompt('canvasHost: ').trim();
+  console.log('\n\n');
+  if (canvasHost.length === 0) {
+    print.fatalError('No Canvas host provided. Now quitting.');
   }
   console.log('');
 
