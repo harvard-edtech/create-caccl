@@ -2,30 +2,102 @@
 
 const fs = require('fs');
 const path = require('path');
-const execSync = require('child_process').execSync;
+const { execSync } = require('child_process');
 
 // Import helpers
 const getCanvasHost = require('../helpers/getCanvasHost');
 const getAccessToken = require('../helpers/getAccessToken');
 const copyTo = require('../helpers/copyTo');
-
 const print = require('../helpers/print');
 
-const exec = (command, print) => {
+// Create function to execute a terminal command
+const exec = (command, forwardStdio) => {
   return execSync(command, (
-    print
-      ? {stdio: 'inherit'}
+    forwardStdio
+      ? { stdio: 'inherit' }
       : undefined
   ));
 };
 
+/* eslint-disable no-console */
+
+// Get current directory so we can write files to it
 const currDir = process.env.PWD;
 
-module.exports = (prompt, packageJSON) => {
-  /*------------------------------------------------------------------------*/
-  /*                               Preparation                              */
-  /*------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
+/*                            Helper Functions                            */
+/*------------------------------------------------------------------------*/
 
+/* Prints a final instructional message */
+const printEndMessage = () => {
+  print.subtitle('Starting Production Environment:');
+  console.log('In the root directory of the project:');
+  console.log('1. Start using "npm start"');
+  console.log('');
+
+  print.subtitle('Starting Development Environment:');
+  console.log('After setting up your dev environment,');
+  console.log('1. Open 2 terminal windows, go to the root directory of the project in each');
+  console.log('2. Run "npm run dev:canvas" in the first window');
+  console.log('3. Run "npm run dev:server" in the second window');
+  console.log('To launch your app, read instructions in the first window (Canvas)');
+  console.log('');
+};
+
+/* Walks user through process of setting up the development environment */
+const setUpDevEnvironment = (canvasHost, prompt) => {
+  console.log('\n\n');
+  print.title('Let\'s set up your dev environment.');
+  console.log('');
+
+  // Get Canvas host and course id
+  print.subtitle('Do you have a sandbox Canvas course?');
+  console.log('> If no, hit ctrl+c, get one from your Canvas admin, then re-run this tool');
+  console.log('> If yes, paste the link to it below');
+  console.log(`Example: https://${canvasHost}/courses/538209`);
+  console.log('');
+
+  let courseId;
+  while (!courseId) {
+    const link = prompt('course link: ');
+    try {
+      const parts = link.split('/');
+      courseId = parseInt(parts[4], 10);
+    } catch (err) {
+      courseId = null;
+      console.log('Invalid course link. Please try again\n');
+    }
+  }
+  console.log('');
+
+  // Get access token
+  const accessToken = getAccessToken(prompt);
+
+  const devEnvironment = (
+    'module.exports = {\n'
+    + `  canvasHost: '${canvasHost}',\n`
+    + `  courseId: '${courseId}',\n`
+    + `  accessToken: '${accessToken}',\n`
+    + '};'
+  );
+  fs.writeFileSync(
+    path.join(currDir, 'config', 'devEnvironment.js'),
+    devEnvironment,
+    'utf-8'
+  );
+
+  console.log('\n\n');
+  print.title('Done! Development Environment Set Up');
+  console.log('\n');
+  printEndMessage();
+  console.log('Have fun!');
+};
+
+/*------------------------------------------------------------------------*/
+/*                         Main: Create an EJS app                        */
+/*------------------------------------------------------------------------*/
+
+module.exports = (prompt, packageJSON) => {
   // Get Canvas host
   const canvasHost = getCanvasHost(prompt);
   if (canvasHost.length === 0) {
@@ -79,7 +151,7 @@ module.exports = (prompt, packageJSON) => {
   };
 
   // 1. Update .gitignore
-  stepTitle('Updating .gitignore')
+  stepTitle('Updating .gitignore');
   const gitignoreFilename = path.join(currDir, '.gitignore');
   let gitignore = (
     fs.existsSync(gitignoreFilename)
@@ -152,14 +224,14 @@ module.exports = (prompt, packageJSON) => {
   });
 
   // 6. Create index.js
-  stepTitle('Creating index.js')
+  stepTitle('Creating index.js');
   copyTo(
     path.join(__dirname, 'ejsFiles', 'index.js'),
     path.join(currDir, 'index.js')
   );
 
   // 7. Create routes.js
-  stepTitle('Creating routes.js')
+  stepTitle('Creating routes.js');
   copyTo(
     path.join(__dirname, 'ejsFiles', 'routes.js'),
     path.join(currDir, 'routes.js')
@@ -202,67 +274,4 @@ module.exports = (prompt, packageJSON) => {
   } else {
     console.log('\nOkay. Follow the instructions above to set up your dev environment.\n\nHave fun!');
   }
-};
-
-const setUpDevEnvironment = (canvasHost, prompt) => {
-  console.log('\n\n');
-  print.title('Let\'s set up your dev environment.');
-  console.log('');
-
-  // Get Canvas host and course id
-  print.subtitle('Do you have a sandbox Canvas course?');
-  console.log('> If no, hit ctrl+c, get one from your Canvas admin, then re-run this tool');
-  console.log('> If yes, paste the link to it below');
-  console.log(`Example: https://${canvasHost}/courses/538209`);
-  console.log('');
-
-  let courseId;
-  while (!courseId) {
-    const link = prompt('course link: ');
-    try {
-      const parts = link.split('/');
-      courseId = parseInt(parts[4], 10);
-    } catch (err) {
-      courseId = null;
-      console.log('Invalid course link. Please try again\n');
-    }
-  }
-  console.log('');
-
-  // Get access token
-  const accessToken = getAccessToken(prompt);
-
-  const devEnvironment = (
-    'module.exports = {\n'
-    + `  canvasHost: '${canvasHost}',\n`
-    + `  courseId: '${courseId}',\n`
-    + `  accessToken: '${accessToken}',\n`
-    + '};'
-  );
-  fs.writeFileSync(
-    path.join(currDir, 'config', 'devEnvironment.js'),
-    devEnvironment,
-    'utf-8'
-  );
-
-  console.log('\n\n');
-  print.title('Done! Development Environment Set Up');
-  console.log('\n');
-  printEndMessage();
-  console.log('Have fun!');
-};
-
-const printEndMessage = () => {
-  print.subtitle('Starting Production Environment:');
-  console.log('In the root directory of the project:')
-  console.log('1. Start using "npm start"');
-  console.log('');
-
-  print.subtitle('Starting Development Environment:');
-  console.log('After setting up your dev environment,');
-  console.log('1. Open 2 terminal windows, go to the root directory of the project in each');
-  console.log('2. Run "npm run dev:canvas" in the first window');
-  console.log('3. Run "npm run dev:server" in the second window');
-  console.log('To launch your app, read instructions in the first window (Canvas)');
-  console.log('');
 };

@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const W = process.stdout.columns;
 
 const leftBuffer = (message, padding) => {
@@ -35,9 +37,9 @@ const surroundWithChars = (str, char) => {
     + ' '
     + char.repeat(rightBuffer(str, 1))
   );
-}
+};
 
-let promptInstance;
+let prompt;
 
 module.exports = {
   title: (str) => {
@@ -61,8 +63,8 @@ module.exports = {
       lines.push(str.substring(index, Math.min(index + W, str.length)));
       index += W;
     }
-    lines.forEach((line, index) => {
-      if (index !== lines.length - 1) {
+    lines.forEach((line, lineIndex) => {
+      if (lineIndex !== lines.length - 1) {
         // No need to center: fills whole line
         console.log(line);
       } else {

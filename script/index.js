@@ -102,15 +102,15 @@ module.exports = (prompt, packageJSON) => {
 
   // Create scripts
   copyTo(
-    path.join(__dirname, 'files', 'getCredentials.js'),
+    path.join(__dirname, 'files', 'helpers', 'getCredentials.js'),
     path.join(currDir, 'helpers', 'getCredentials.js')
   );
   copyTo(
-    path.join(__dirname, 'files', 'print.js'),
+    path.join(__dirname, 'files', 'helpers', 'print.js'),
     path.join(currDir, 'helpers', 'print.js')
   );
   copyTo(
-    path.join(__dirname, 'files', 'prompt.js'),
+    path.join(__dirname, 'files', 'helpers', 'prompt.js'),
     path.join(currDir, 'helpers', 'prompt.js')
   );
 

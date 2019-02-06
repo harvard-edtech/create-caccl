@@ -1,6 +1,6 @@
 module.exports = async (api) => {
-
   // TODO: replace hello world script below
+
   try {
     const profile = await api.user.self.getProfile();
     console.log(`Hi ${profile.name}, this is your "hello world" script!`);
@@ -9,5 +9,4 @@ module.exports = async (api) => {
   } catch (err) {
     console.log('An error occurred:', err.message, err.code);
   }
-
 };

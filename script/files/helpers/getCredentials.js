@@ -7,6 +7,8 @@ const initCACCL = require('caccl/script');
 const prompt = require('./prompt');
 const print = require('./print');
 
+/* eslint-disable no-console */
+
 const askForCredentials = async () => {
   // Get Canvas host
   let canvasHost;
@@ -53,6 +55,7 @@ const askForCredentials = async () => {
         canvasHost,
       });
       try {
+        /* eslint-disable no-await-in-loop */
         await api.user.self.getProfile();
         // No errors occurred!
         accessToken = input;
@@ -158,5 +161,5 @@ module.exports = async () => {
   return {
     canvasHost,
     accessToken,
-  }
+  };
 };

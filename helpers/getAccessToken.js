@@ -1,5 +1,7 @@
 const print = require('./print');
 
+/* eslint-disable no-console */
+
 module.exports = (prompt) => {
   // Get access token
   print.subtitle('What\'s your Canvas access token?');
@@ -14,4 +16,4 @@ module.exports = (prompt) => {
   console.log('');
 
   return accessToken;
-}
+};

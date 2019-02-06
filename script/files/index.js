@@ -1,6 +1,4 @@
 const initCACCL = require('caccl/script');
-const fs = require('fs');
-const path = require('path');
 
 // Import script
 const script = require('./script');
@@ -23,4 +21,5 @@ const main = async () => {
 };
 
 // Start main
+/* eslint-disable no-console */
 main().catch(console.log);

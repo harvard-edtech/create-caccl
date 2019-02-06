@@ -1,5 +1,7 @@
 const print = require('./print');
 
+/* eslint-disable no-console */
+
 module.exports = (prompt) => {
   // Get Canvas host
   print.subtitle('Which Canvas host should your app connect to by default?');

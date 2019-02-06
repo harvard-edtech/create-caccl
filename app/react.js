@@ -2,25 +2,110 @@
 
 const fs = require('fs');
 const path = require('path');
-const execSync = require('child_process').execSync;
+const { execSync } = require('child_process');
 
 // Import helpers
 const getCanvasHost = require('../helpers/getCanvasHost');
 const copyTo = require('../helpers/copyTo');
-
 const print = require('../helpers/print');
 
 // Set up bash command execution
-const exec = (command, print) => {
+const exec = (command, forwardStdio) => {
   return execSync(command, (
-    print
-      ? {stdio: 'inherit'}
+    forwardStdio
+      ? { stdio: 'inherit' }
       : undefined
   ));
 };
 
 // Determine current working directory
 const currDir = process.env.PWD;
+
+/* eslint-disable no-console */
+
+/*------------------------------------------------------------------------*/
+/*                                 Helpers                                */
+/*------------------------------------------------------------------------*/
+
+/* Prints a final instructional message */
+const printEndMessage = () => {
+  print.subtitle('Starting Production Environment:');
+  console.log('In the root directory of the project:');
+  console.log('1. Build using "npm run build"');
+  console.log('2. Start using "npm start"');
+  console.log('');
+
+  print.subtitle('Starting Development Environment:');
+  console.log('After setting up your dev environment,');
+  console.log('1. Open 3 terminal windows, go to the root directory of the project in each');
+  console.log('2. Run "npm run dev:canvas" in the first window');
+  console.log('3. Run "npm run dev:server" in the second window');
+  console.log('4. Run "npm run dev:client" in the third window');
+  console.log('To launch your app, read instructions in the first window (Canvas)');
+  console.log('');
+};
+
+/* Walks user through process of setting up the development environment */
+const setUpDevEnvironment = (canvasHost, prompt) => {
+  console.log('\n\n');
+  print.title('Let\'s set up your dev environment.');
+  console.log('');
+
+  // Get course id
+  print.subtitle('Do you have a sandbox Canvas course?');
+  console.log('> If no, hit ctrl+c, get one from your Canvas admin, then re-run this tool');
+  console.log('> If yes, paste the link to it below');
+  console.log(`Example: https://${canvasHost}/courses/538209`);
+  console.log('');
+
+  let courseId;
+  while (!courseId) {
+    const link = prompt('course link: ');
+    try {
+      const parts = link.split('/');
+      courseId = parseInt(parts[4], 10);
+    } catch (err) {
+      courseId = null;
+      console.log('Invalid course link. Please try again\n');
+    }
+  }
+  console.log('');
+
+  // Get access token
+  print.subtitle('What\'s your Canvas access token?');
+  console.log('Recommendation: add a "fake" user to your course and do the following as that user. You may have more privileges than typical users (the app can do more damage with your token). Using a "fake" user limits this risk.');
+  console.log('');
+  console.log('1. Log into Canvas, click the user picture (top left), click "Settings"');
+  console.log('2. Scroll down and click "+ New Access Token"');
+  console.log('3. Set purpose to "Dev Environment for <App Name>", leave expiry blank');
+  console.log('4. Click "Generate Token"');
+  console.log('');
+  const accessToken = prompt('accessToken: ');
+  console.log('');
+
+  const devEnvironment = (
+    'module.exports = {\n'
+    + `  canvasHost: '${canvasHost}',\n`
+    + `  courseId: '${courseId}',\n`
+    + `  accessToken: '${accessToken}',\n`
+    + '};'
+  );
+  fs.writeFileSync(
+    path.join(currDir, 'config', 'devEnvironment.js'),
+    devEnvironment,
+    'utf-8'
+  );
+
+  console.log('\n\n');
+  print.title('Done! Development Environment Set Up');
+  console.log('\n');
+  printEndMessage();
+  console.log('Have fun!');
+};
+
+/*------------------------------------------------------------------------*/
+/*                         Main: Create React app                         */
+/*------------------------------------------------------------------------*/
 
 module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/
@@ -36,9 +121,12 @@ module.exports = (prompt, packageJSON) => {
     }
 
     try {
+      /* eslint-disable import/no-dynamic-require */
+      /* eslint-disable global-require */
       const canvasDefaults = require(
         path.join(currDir, 'config', 'canvasDefaults.js')
       );
+
       // Canvas defaults exist
       if (!canvasDefaults || !canvasDefaults.canvasHost) {
         throw new Error('invalid canvasDefaults');
@@ -106,7 +194,7 @@ module.exports = (prompt, packageJSON) => {
   };
 
   // 1. Update .gitignore
-  stepTitle('Updating .gitignore')
+  stepTitle('Updating .gitignore');
   const gitignoreFilename = path.join(currDir, '.gitignore');
   let gitignore = (
     fs.existsSync(gitignoreFilename)
@@ -181,7 +269,7 @@ module.exports = (prompt, packageJSON) => {
   });
 
   // 6. Create index.js
-  stepTitle('Creating index.js')
+  stepTitle('Creating index.js');
   copyTo(
     path.join(__dirname, 'reactFiles', 'index.js'),
     path.join(currDir, 'index.js')
@@ -221,78 +309,4 @@ module.exports = (prompt, packageJSON) => {
   } else {
     console.log('\nOkay. Re-run this tool if you ever need help setting up your dev environment.\n\nHave fun!');
   }
-};
-
-const setUpDevEnvironment = (canvasHost, prompt) => {
-  console.log('\n\n');
-  print.title('Let\'s set up your dev environment.');
-  console.log('');
-
-  // Get course id
-  print.subtitle('Do you have a sandbox Canvas course?');
-  console.log('> If no, hit ctrl+c, get one from your Canvas admin, then re-run this tool');
-  console.log('> If yes, paste the link to it below');
-  console.log(`Example: https://${canvasHost}/courses/538209`);
-  console.log('');
-
-  let courseId;
-  while (!courseId) {
-    const link = prompt('course link: ');
-    try {
-      const parts = link.split('/');
-      courseId = parseInt(parts[4], 10);
-    } catch (err) {
-      courseId = null;
-      console.log('Invalid course link. Please try again\n');
-    }
-  }
-  console.log('');
-
-  // Get access token
-  print.subtitle('What\'s your Canvas access token?');
-  console.log('Recommendation: add a "fake" user to your course and do the following as that user. You may have more privileges than typical users (the app can do more damage with your token). Using a "fake" user limits this risk.');
-  console.log('');
-  console.log('1. Log into Canvas, click the user picture (top left), click "Settings"');
-  console.log('2. Scroll down and click "+ New Access Token"');
-  console.log('3. Set purpose to "Dev Environment for <App Name>", leave expiry blank');
-  console.log('4. Click "Generate Token"');
-  console.log('');
-  const accessToken = prompt('accessToken: ');
-  console.log('');
-
-  const devEnvironment = (
-    'module.exports = {\n'
-    + `  canvasHost: '${canvasHost}',\n`
-    + `  courseId: '${courseId}',\n`
-    + `  accessToken: '${accessToken}',\n`
-    + '};'
-  );
-  fs.writeFileSync(
-    path.join(currDir, 'config', 'devEnvironment.js'),
-    devEnvironment,
-    'utf-8'
-  );
-
-  console.log('\n\n');
-  print.title('Done! Development Environment Set Up');
-  console.log('\n');
-  printEndMessage();
-  console.log('Have fun!');
-};
-
-const printEndMessage = () => {
-  print.subtitle('Starting Production Environment:');
-  console.log('In the root directory of the project:')
-  console.log('1. Build using "npm run build"');
-  console.log('2. Start using "npm start"');
-  console.log('');
-
-  print.subtitle('Starting Development Environment:');
-  console.log('After setting up your dev environment,');
-  console.log('1. Open 3 terminal windows, go to the root directory of the project in each');
-  console.log('2. Run "npm run dev:canvas" in the first window');
-  console.log('3. Run "npm run dev:server" in the second window');
-  console.log('4. Run "npm run dev:client" in the third window');
-  console.log('To launch your app, read instructions in the first window (Canvas)');
-  console.log('');
 };
