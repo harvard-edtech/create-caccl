@@ -6,23 +6,21 @@ const path = require('path');
 const script = require('./script');
 
 // Import helpers
-const getCanvasHost = require('./helpers/getCanvasHost');
-const getAccessToken = require('./helpers/getAccessToken');
+const getCredentials = require('./helpers/getCredentials');
 
-// Get canvas host
-const canvasHost = getCanvasHost();
+const main = async () => {
+  // Get user's credentials
+  const { canvasHost, accessToken } = await getCredentials();
 
-// Get access token, initialize CACCL, then run script
-getAccessToken(canvasHost)
-  .then((accessToken) => {
-    // Initialize CACCL
-    const api = initCACCL({
-      accessToken,
-      canvasHost,
-    });
-
-    console.log('\n\n');
-
-    // Call script
-    script(api);
+  // Initialize CACCL
+  const api = initCACCL({
+    canvasHost,
+    accessToken,
   });
+
+  // Call script
+  await script(api);
+};
+
+// Start main
+main().catch(console.log);

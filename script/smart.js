@@ -5,7 +5,6 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 
 // Import helpers
-const getCanvasHost = require('../helpers/getCanvasHost');
 const copyTo = require('../helpers/copyTo');
 const print = require('../helpers/print');
 
@@ -24,21 +23,15 @@ module.exports = (prompt, packageJSON) => {
   /*                               Preparation                              */
   /*------------------------------------------------------------------------*/
 
-  // Canvas host
-  const canvasHost = getCanvasHost(prompt);
-
   // Ask before continuing
   console.log('\n');
   print.subtitle('We are about to:');
   console.log('- Create/overwrite index.js');
   console.log('- Create/overwrite script.js');
   console.log('- Create a helpers/ folder and populate it with files:');
-  console.log('   > "getAccessToken.js"');
-  console.log('   > "getCanvasHost.js"');
+  console.log('   > "getCredentials.js"');
   console.log('   > "print.js"');
   console.log('   > "prompt.js"');
-  console.log('- Create a config/ folder and populate it with files:');
-  console.log('   > "canvasDefaults.js"');
   console.log('- Add config/ and node_modules/ to the .gitignore');
   console.log('- Add/replace npm scripts:');
   console.log('   > "start"');
@@ -61,7 +54,7 @@ module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/
 
   // Title printer
-  const numSteps = 8;
+  const numSteps = 7;
   let stepIndex = 1;
   const stepTitle = (title) => {
     const progressBar = (
@@ -104,35 +97,14 @@ module.exports = (prompt, packageJSON) => {
   newPackageData.scripts.start = 'node index.js';
   fs.writeFileSync(packageJSON.filename, JSON.stringify(newPackageData, null, '\t'), 'utf-8');
 
-  // 5. Create config files
-  stepTitle('Adding config files');
-
-  // Make a new config directory
-  exec('mkdir -p config');
-
-  // Create all config files
-  [
-    {
-      filename: 'canvasHost.txt',
-      data: canvasHost,
-    },
-  ].forEach((file) => {
-    const filename = path.join(currDir, 'config', file.filename);
-    fs.writeFileSync(filename, file.data, 'utf-8');
-  });
-
-  // 6. Create helpers
+  // 5. Create helpers
   stepTitle('Creating helpers/');
   exec('mkdir -p helpers');
 
   // Create scripts
   copyTo(
-    path.join(__dirname, 'smartFiles', 'getAccessToken.js'),
-    path.join(currDir, 'helpers', 'getAccessToken.js')
-  );
-  copyTo(
-    path.join(__dirname, 'smartFiles', 'getCanvasHost.js'),
-    path.join(currDir, 'helpers', 'getCanvasHost.js')
+    path.join(__dirname, 'smartFiles', 'getCredentials.js'),
+    path.join(currDir, 'helpers', 'getCredentials.js')
   );
   copyTo(
     path.join(__dirname, 'smartFiles', 'print.js'),
@@ -143,14 +115,14 @@ module.exports = (prompt, packageJSON) => {
     path.join(currDir, 'helpers', 'prompt.js')
   );
 
-  // 7. Create init.js
+  // 6. Create index.js
   stepTitle('Creating index.js')
   copyTo(
     path.join(__dirname, 'smartFiles', 'index.js'),
     path.join(currDir, 'index.js')
   );
 
-  // 8. Create script.js
+  // 7. Create script.js
   stepTitle('Creating script.js')
   copyTo(
     path.join(__dirname, 'smartFiles', 'script.js'),
@@ -162,7 +134,7 @@ module.exports = (prompt, packageJSON) => {
   print.title('Done! Node.js Basic Script Project Created');
   console.log('\n');
 
-  print.subtitle('Creating your script:');
+  print.subtitle('Editing your script:');
   console.log('- Edit script.js');
   console.log('- Visit the caccl-api project on npm for api documentation');
   console.log('');
