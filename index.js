@@ -1,11 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const promptSync = require('prompt-sync')();
-const execSync = require('child_process').execSync;
+const { execSync } = require('child_process');
+
+/* eslint-disable no-console */
 
 // Prep command executor
 const exec = (command) => {
-  return execSync(command, {stdio: 'inherit'});
+  return execSync(command, { stdio: 'inherit' });
 };
 
 // Import helpers
@@ -76,9 +78,9 @@ module.exports = () => {
 
   // Prompt for project type
   print.subtitle('Choose a CACCL project type:');
-  console.log('1 - React + Express');
+  console.log('1 - React + Express App');
   console.log('2 - Node.js Script');
-  console.log('3 - EJS + Express server-side app');
+  console.log('3 - EJS + Express Server-side App');
   console.log('');
   const type = prompt('project type: ').toLowerCase();
 
@@ -94,7 +96,8 @@ module.exports = () => {
     print.title('Initializing CACCL React + Express Project');
     console.log('\n');
     return react(prompt, packageJSON);
-  } else if (
+  }
+  if (
     type === '2'
     || type === 's'
     || type === 'node script'
@@ -104,17 +107,18 @@ module.exports = () => {
     print.title('Initializing Node.js Script Project');
     console.log('\n');
     return script(prompt, packageJSON);
-  } else if (
+  }
+  if (
     type === '3'
     || type === 'e'
     || type === 'ejs'
     || type === 'ejs+express'
   ) {
-    print.title('Initializing EJS + Express server-side app project');
+    print.title('Initializing EJS + Express Server-side App Project');
     console.log('\n');
     return ejs(prompt, packageJSON);
-  } else {
-    // Invalid type
-    print.fatalError('Invalid project type');
   }
+
+  // Invalid type
+  print.fatalError('Invalid project type');
 };
