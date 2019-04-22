@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 // Width of the terminal window
 const W = process.stdout.columns;
 
@@ -41,7 +43,7 @@ const surroundWithChars = (str, char) => {
     + ' '
     + char.repeat(rightBuffer(str, 1))
   );
-}
+};
 
 module.exports = {
   // Prints a boxed-in title
@@ -70,8 +72,8 @@ module.exports = {
       lines.push(str.substring(index, Math.min(index + W, str.length)));
       index += W;
     }
-    lines.forEach((line, index) => {
-      if (index !== lines.length - 1) {
+    lines.forEach((line, lineIndex) => {
+      if (lineIndex !== lines.length - 1) {
         // No need to center: fills whole line
         console.log(line);
       } else {

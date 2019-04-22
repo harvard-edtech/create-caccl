@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-
 // Import caccl
 import initCACCL from 'caccl/client/cached';
+
+// Import React
+import React, { Component } from 'react';
+
+// Import resources
+import logo from './logo.svg';
+import './App.css';
 
 // Initialize caccl
 const { api, getStatus } = initCACCL();
@@ -56,7 +59,7 @@ class App extends Component {
 
       // Update state
       return this.setState({
-        message: `Hi ${profile.name}! Your CACCL app is ready!`
+        message: `Hi ${profile.name}! Your CACCL app is ready!`,
       });
     } catch (err) {
       return this.setState({

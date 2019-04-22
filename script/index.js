@@ -2,16 +2,16 @@
 
 const fs = require('fs');
 const path = require('path');
-const execSync = require('child_process').execSync;
+const { execSync } = require('child_process');
 
 // Import helpers
 const copyTo = require('../helpers/copyTo');
 const print = require('../helpers/print');
 
-const exec = (command, print) => {
+const exec = (command, verbose) => {
   return execSync(command, (
-    print
-      ? {stdio: 'inherit'}
+    verbose
+      ? { stdio: 'inherit' }
       : undefined
   ));
 };
@@ -24,6 +24,7 @@ module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/
 
   // Ask before continuing
+  /* eslint-disable no-console */
   print.subtitle('We are about to:');
   console.log('- Create/overwrite index.js');
   console.log('- Create/overwrite script.js');
@@ -66,7 +67,7 @@ module.exports = (prompt, packageJSON) => {
   };
 
   // 1. Update .gitignore
-  stepTitle('Updating .gitignore')
+  stepTitle('Updating .gitignore');
   const gitignoreFilename = path.join(currDir, '.gitignore');
   let gitignore = (
     fs.existsSync(gitignoreFilename)
@@ -115,14 +116,14 @@ module.exports = (prompt, packageJSON) => {
   );
 
   // 6. Create index.js
-  stepTitle('Creating index.js')
+  stepTitle('Creating index.js');
   copyTo(
     path.join(__dirname, 'files', 'index.js'),
     path.join(currDir, 'index.js')
   );
 
   // 7. Create script.js
-  stepTitle('Creating script.js')
+  stepTitle('Creating script.js');
   copyTo(
     path.join(__dirname, 'files', 'script.js'),
     path.join(currDir, 'script.js')
