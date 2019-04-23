@@ -7,6 +7,8 @@ const { execSync } = require('child_process');
 const setUpDevEnvironment = require('../helpers/setUpDevEnvironment');
 const copyTo = require('../helpers/copyTo');
 const print = require('../helpers/print');
+const getPackageJSON = require('../helpers/getPackageJSON');
+const writePackageJSON = require('../helpers/writePackageJSON');
 
 // Set up bash command execution
 const exec = (command, forwardStdio) => {
@@ -144,17 +146,16 @@ module.exports = (prompt, packageJSON) => {
 
   // 4. Adding scripts
   stepTitle('Adding scripts to package.json');
-  const newPackageData = packageJSON.data;
-  if (!newPackageData.scripts) {
-    newPackageData.scripts = {};
+  const newPackageJSON = getPackageJSON();
+  if (!newPackageJSON.scripts) {
+    newPackageJSON.scripts = {};
   }
-  newPackageData.scripts.start = 'node index.js';
-  newPackageData.scripts.build = 'cd ./client;npm run build';
-  newPackageData.scripts['dev:canvas'] = 'node ./node_modules/caccl/canvas/startPartialSimulation';
-  newPackageData.scripts['dev:server'] = 'export DEV=true;npm start';
-  newPackageData.scripts['dev:client'] = 'export DEV=true;cd client;npm start';
-
-  fs.writeFileSync(packageJSON.filename, JSON.stringify(newPackageData, null, '\t'), 'utf-8');
+  newPackageJSON.scripts.start = 'node index.js';
+  newPackageJSON.scripts.build = 'cd ./client;npm install;npm run build';
+  newPackageJSON.scripts['dev:canvas'] = 'node ./node_modules/caccl/canvas/startPartialSimulation';
+  newPackageJSON.scripts['dev:server'] = 'export DEV=true;npm start';
+  newPackageJSON.scripts['dev:client'] = 'export DEV=true;cd client;npm start';
+  writePackageJSON(newPackageJSON);
 
   // 6. Create index.js
   stepTitle('Creating index.js');

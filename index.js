@@ -15,6 +15,7 @@ const print = require('./helpers/print');
 const react = require('./app/react');
 const ejs = require('./app/ejs');
 const script = require('./script');
+const getPackageJSON = require('./helpers/getPackageJSON');
 
 // Create helpers and contstants
 const currDir = process.env.PWD;
@@ -31,8 +32,8 @@ print.savePrompt(prompt);
 // Initializer script
 module.exports = () => {
   // Check if the current directory is an NPM project
-  const packageFilename = path.join(currDir, 'package.json');
-  if (!fs.existsSync(packageFilename)) {
+  const packageJSON = getPackageJSON();
+  if (!packageJSON) {
     // Initialize npm project
     print.title('Initialize NPM Project');
     console.log('');
@@ -51,27 +52,14 @@ module.exports = () => {
     }
 
     // Fail if wizard was quit
-    if (!fs.existsSync(packageFilename)) {
+    const newPackageJSON = getPackageJSON();
+    if (!newPackageJSON) {
       print.fatalError('NPM project initialization was cancelled. Now quitting.');
     }
 
     console.log('\n');
     console.log('Great! Now we can initialize CACCL.\n\n');
   }
-
-  // Read in current package.json file
-  const packageStringContents = fs.readFileSync(packageFilename, 'utf-8');
-  let packageJSONData;
-  try {
-    packageJSONData = JSON.parse(packageStringContents);
-  } catch (err) {
-    console.log('\nOops! Your package.json file seems to be corrupted. Please fix it before continuing');
-    process.exit(0);
-  }
-  const packageJSON = {
-    data: packageJSONData,
-    filename: packageFilename,
-  };
 
   print.title('CACCL Init');
   console.log('\n');
@@ -95,7 +83,7 @@ module.exports = () => {
   ) {
     print.title('Initializing CACCL React + Express Project');
     console.log('\n');
-    return react(prompt, packageJSON);
+    return react(prompt);
   }
   if (
     type === '2'
@@ -106,7 +94,7 @@ module.exports = () => {
   ) {
     print.title('Initializing Node.js Script Project');
     console.log('\n');
-    return script(prompt, packageJSON);
+    return script();
   }
   if (
     type === '3'
@@ -116,7 +104,7 @@ module.exports = () => {
   ) {
     print.title('Initializing EJS + Express Server-side App Project');
     console.log('\n');
-    return ejs(prompt, packageJSON);
+    return ejs(prompt);
   }
 
   // Invalid type

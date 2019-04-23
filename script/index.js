@@ -7,6 +7,8 @@ const { execSync } = require('child_process');
 // Import helpers
 const copyTo = require('../helpers/copyTo');
 const print = require('../helpers/print');
+const getPackageJSON = require('../helpers/getPackageJSON');
+const writePackageJSON = require('../helpers/writePackageJSON');
 
 const exec = (command, verbose) => {
   return execSync(command, (
@@ -18,7 +20,7 @@ const exec = (command, verbose) => {
 
 const currDir = process.env.PWD;
 
-module.exports = (prompt, packageJSON) => {
+module.exports = () => {
   /*------------------------------------------------------------------------*/
   /*                               Preparation                              */
   /*------------------------------------------------------------------------*/
@@ -70,13 +72,13 @@ module.exports = (prompt, packageJSON) => {
 
   // 4. Adding scripts
   stepTitle('Adding scripts to package.json');
-  const newPackageData = packageJSON.data;
-  if (!newPackageData.scripts) {
-    newPackageData.scripts = {};
+  const newPackageJSON = getPackageJSON();
+  if (!newPackageJSON.scripts) {
+    newPackageJSON.scripts = {};
   }
-  newPackageData.main = 'index.js';
-  newPackageData.scripts.start = 'node index.js';
-  fs.writeFileSync(packageJSON.filename, JSON.stringify(newPackageData, null, '\t'), 'utf-8');
+  newPackageJSON.main = 'index.js';
+  newPackageJSON.scripts.start = 'node index.js';
+  writePackageJSON(newPackageJSON);
 
   // 5. Create helpers
   stepTitle('Creating helpers/');
