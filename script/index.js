@@ -23,31 +23,12 @@ module.exports = (prompt, packageJSON) => {
   /*                               Preparation                              */
   /*------------------------------------------------------------------------*/
 
-  // Ask before continuing
   /* eslint-disable no-console */
-  print.subtitle('We are about to:');
-  console.log('- Create/overwrite index.js');
-  console.log('- Create/overwrite script.js');
-  console.log('- Create a helpers/ folder and populate it with files:');
-  console.log('   > "getCredentials.js"');
-  console.log('   > "print.js"');
-  console.log('   > "prompt.js"');
-  console.log('- Add config/ and node_modules/ to the .gitignore');
-  console.log('- Add/replace npm scripts:');
-  console.log('   > "start"');
+
+  // Ask before continuing
+  print.subtitle('Ready to continue?');
+  console.log('We\'re about to install dependencies, add scripts to package.json, update .gitignore, and more. Consider backing up your project before continuing.');
   print.enterToContinue();
-
-  if (fs.existsSync(path.join(currDir, 'script.js'))) {
-    console.log('\nJust to reconfirm: we are going to *overwrite* your script.js file!');
-    console.log('');
-    print.enterToContinue();
-  }
-
-  if (fs.existsSync(path.join(currDir, 'init.js'))) {
-    console.log('\nJust to reconfirm: we are going to *overwrite* your init.js file!');
-    console.log('');
-    print.enterToContinue();
-  }
 
   /*------------------------------------------------------------------------*/
   /*                                  Begin                                 */

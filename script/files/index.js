@@ -17,9 +17,15 @@ const main = async () => {
   });
 
   // Call script
-  await script(api);
+  try {
+    await script(api);
+  } catch (err) {
+    // Print error
+    /* eslint-disable no-console */
+    console.log('\nAn error occurred while running your script:');
+    console.log(err);
+  }
 };
 
 // Start main
-/* eslint-disable no-console */
 main().catch(console.log);
