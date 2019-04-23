@@ -24,14 +24,14 @@
 	},
 	"homepage": "https://github.com/harvard-edtech/create-caccl#readme",
 	"dependencies": {
-		"caccl": "^1.0.42",
+		"caccl": "^1.0.70",
 		"fs": "0.0.1-security",
 		"prompt-sync": "^4.1.6"
 	},
 	"devDependencies": {
-		"eslint": "^5.13.0",
+		"eslint": "^5.16.0",
 		"eslint-config-airbnb": "^17.1.0",
-		"eslint-plugin-import": "^2.16.0",
+		"eslint-plugin-import": "^2.17.2",
 		"eslint-plugin-jsx-a11y": "^6.2.1",
 		"eslint-plugin-react": "^7.12.4"
 	}
