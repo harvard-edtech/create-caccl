@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path');
 const promptSync = require('prompt-sync')();
 const { execSync } = require('child_process');
 
@@ -16,9 +14,6 @@ const react = require('./app/react');
 const ejs = require('./app/ejs');
 const script = require('./script');
 const getPackageJSON = require('./helpers/getPackageJSON');
-
-// Create helpers and contstants
-const currDir = process.env.PWD;
 
 const prompt = (title, notRequired) => {
   const val = promptSync(title);

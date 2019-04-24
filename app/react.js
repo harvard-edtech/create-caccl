@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const rimraf = require('rimraf').sync;
 
 // Import helpers
 const setUpDevEnvironment = require('../helpers/setUpDevEnvironment');
@@ -48,7 +49,7 @@ const printEndMessage = () => {
 /*                         Main: Create React app                         */
 /*------------------------------------------------------------------------*/
 
-module.exports = (prompt, packageJSON) => {
+module.exports = (prompt) => {
   /*------------------------------------------------------------------------*/
   /*                               Preparation                              */
   /*------------------------------------------------------------------------*/
@@ -110,7 +111,7 @@ module.exports = (prompt, packageJSON) => {
   /*------------------------------------------------------------------------*/
 
   // Title printer
-  const numSteps = 6;
+  const numSteps = 7;
   let stepIndex = 1;
   const stepTitle = (title) => {
     const progressBar = (
@@ -157,20 +158,24 @@ module.exports = (prompt, packageJSON) => {
   newPackageJSON.scripts['dev:client'] = 'export DEV=true;cd client;npm start';
   writePackageJSON(newPackageJSON);
 
-  // 6. Create index.js
+  // 5. Create index.js
   stepTitle('Creating index.js');
   copyTo(
     path.join(__dirname, 'reactFiles', 'index.js'),
     path.join(currDir, 'index.js')
   );
 
-  // 7. Replace App.js
+  // 6. Replace App.js
   stepTitle('Replacing client/src/App.js with "hello world" app');
   // Read in App.js
   copyTo(
     path.join(__dirname, 'reactFiles', 'App.js'),
     path.join(currDir, 'client', 'src', 'App.js')
   );
+
+  // 7. Clean up git
+  stepTitle('Cleaning up .git folder');
+  rimraf(path.join(currDir, 'client', '.git'));
 
   // Print finish message
   console.log('\n\n');
