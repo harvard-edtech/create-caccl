@@ -90,7 +90,7 @@ class App extends Component {
           Resources:
           <a
             className="App-link"
-            href="https://github.com/harvard-edtech/caccl"
+            href="https://harvard-edtech.github.io/caccl/"
             target="_blank"
             rel="noopener noreferrer"
           >

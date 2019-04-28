@@ -11,17 +11,24 @@
 </head>
 
 <body>
-  <!-- Centered block with border -->
-  <div class="text-center p-2">
-    <!-- Bootstrap alert -->
-    <div class="alert alert-info d-inline-block">
-      <!-- Title -->
-      <h3>It's great to meet you, <%= name %>!</h3>
 
-      <!-- Subtitle -->
-      <p class="lead m-0">
-        Start by editing routes.js and views/index.ejs.
-      </p>
-    </div>
+  <!-- Bootstrap alert -->
+  <div class="alert alert-dark text-center m-5">
+    <!-- Title -->
+    <h3>It's great to meet you, <%= name %>!</h3>
+
+    <!-- Instructions -->
+    <ul class="list-group">
+      <li class="list-group-item">
+        Start by editing <code>routes.js</code> and <code>views/index.ejs</code>
+      </li>
+      <li class="list-group-item">
+        Read the <a href="https://harvard-edtech.github.io/caccl">CACCL docs</a>
+      </li>
+      <li class="list-group-item">
+        Check out the <a href="https://ejs.co">EJS docs</a>
+      </li>
+    </ul>
   </div>
+
 </body>
