@@ -5,6 +5,7 @@ const script = require('./script');
 
 // Import helpers
 const getCredentials = require('./helpers/getCredentials');
+const prompt = require('./helpers/prompt');
 
 const main = async () => {
   // Get user's credentials
@@ -18,7 +19,7 @@ const main = async () => {
 
   // Call script
   try {
-    await script(api);
+    await script(api, prompt);
   } catch (err) {
     // Print error
     /* eslint-disable no-console */
