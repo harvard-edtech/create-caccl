@@ -149,7 +149,7 @@ module.exports = (prompt) => {
     newPackageJSON.scripts = {};
   }
   newPackageJSON.scripts.start = 'node index.js';
-  newPackageJSON.scripts.build = 'cd ./client;npm install;npm run build';
+  newPackageJSON.scripts.build = 'npm install';
   newPackageJSON.scripts['dev:canvas'] = 'node ./node_modules/caccl/canvas/startPartialSimulation';
   newPackageJSON.scripts['dev:server'] = 'export DEV=true;npm start';
   writePackageJSON(newPackageJSON);
