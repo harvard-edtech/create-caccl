@@ -11,10 +11,9 @@ var nodeVersion = process.versions.node;
 var parts = nodeVersion.split('.');
 var majorVersion = parts[0];
 
-if (majorVersion < 8) {
+if (majorVersion < 10) {
   console.error('Oops! You are running node version ' + majorVersion + '.');
-  console.log('CACCL requires Node 8 or higher. Please update your version of Node.');
-  return;
+  console.log('CACCL requires Node 10 or higher. Please update your version of Node.');
+} else {
+  require('./index.js')();
 }
-
-require('./index.js')();
