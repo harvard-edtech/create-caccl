@@ -138,7 +138,7 @@ module.exports = (prompt) => {
 
   // 2. Initialize React
   stepTitle('Creating React client in client/');
-  exec('npx create-react-app client', true);
+  exec(`${path.join(__dirname, '..', 'node_modules', '.bin', 'create-react-app')} client`, true);
 
   // 3. Installing caccl
   stepTitle('Installing CACCL');
@@ -195,7 +195,7 @@ module.exports = (prompt) => {
     console.log('module.exports = {');
     console.log('  canvasHost: /* an actual Canvas instance */,');
     console.log('  courseId: /* a test course in that instance */,');
-    console.log('  accessToken: /* token for user with access to test course */,');
+    console.log('  accessToken: /* token for instructor with access to test course */,');
     console.log('};');
     console.log('');
     printEndMessage();
