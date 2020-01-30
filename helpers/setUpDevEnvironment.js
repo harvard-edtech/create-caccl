@@ -4,7 +4,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 // Import helpers
-const getAccessToken = require('./getAccessToken');
+const getAccessTokens = require('./getAccessTokens');
 const print = require('./print');
 
 // Set up bash command execution
@@ -51,13 +51,20 @@ module.exports = (prompt) => {
   console.log('');
 
   // Get access token
-  const accessToken = getAccessToken(prompt);
+  const accessTokens = getAccessTokens(prompt);
+
+  const students = accessTokens.students.length > 0
+    ? `'${accessTokens.students.join("','")}'` : '';
+  const tas = accessTokens.tas.length > 0
+    ? `'${accessTokens.tas.join("','")}'` : '';
 
   const devEnvironment = (
     'module.exports = {\n'
     + `  canvasHost: '${canvasHost}',\n`
     + `  courseId: '${courseId}',\n`
-    + `  accessToken: '${accessToken}',\n`
+    + `  accessToken: '${accessTokens.instructor}',\n`
+    + `  students: [${students}],\n`
+    + `  tas: [${tas}],\n`
     + '};'
   );
 
