@@ -138,7 +138,7 @@ module.exports = (prompt) => {
 
   // 2. Initialize React
   stepTitle('Creating React client in client/');
-  exec(`${path.join(__dirname, '..', 'node_modules', '.bin', 'create-react-app')} client`, true);
+  exec('npx create-react-app client', true);
 
   // 3. Installing caccl
   stepTitle('Installing CACCL');
