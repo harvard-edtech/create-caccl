@@ -25,7 +25,6 @@
 	},
 	"homepage": "https://github.com/harvard-edtech/create-caccl#readme",
 	"dependencies": {
-		"caccl": "^1.0.1",
 		"clear": "^0.1.0",
 		"prompt-sync": "^4.1.6",
 		"rimraf": "^2.6.3"
