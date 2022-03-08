@@ -135,6 +135,9 @@ const createCACCL = () => {
   rimraf.sync(path.join(currDir, 'client'));
   rimraf.sync(path.join(currDir, 'server'));
 
+  // Add dependency
+  exec('npm i --save-dev caccl-canvas-partial-simulator');
+
   /*----------------------------------------*/
   /*                Gitignore               */
   /*----------------------------------------*/
@@ -171,7 +174,7 @@ const createCACCL = () => {
   topPackageJSON.scripts.postinstall = 'cd client && npm install && cd ../server && npm install';
   topPackageJSON.scripts.build = 'cd client && npm run build && cd ../server && npm run build';
   // Dev
-  topPackageJSON.scripts['dev:canvas'] = 'npx caccl-canvas-partial-simulator';
+  topPackageJSON.scripts['dev:canvas'] = 'node ./node_modules/caccl-canvas-partial-simulator/lib/index.js';
   topPackageJSON.scripts['dev:server'] = 'cd server && npm run dev:server';
   topPackageJSON.scripts['dev:client'] = 'cd client && npm run dev:client';
   // Write
@@ -266,7 +269,7 @@ const createCACCL = () => {
 
   // Perform update
   exec(`cd server && npm i --save caccl`);
-  exec(`cd server && npm i --save-dev caccl-canvas-partial-simulator`);
+  exec(`cd server && npm i --save-dev caccl-dev-server`);
 
   /*----------------------------------------*/
   /*               Typescript               */
