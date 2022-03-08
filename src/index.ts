@@ -204,16 +204,15 @@ const createCACCL = () => {
   stepTitle('Update Client Project Setup');
 
   // Perform update
-  const clientPackageFilename = path.join(currDir, 'package.json');
+  const clientPackageFilename = path.join(currDir, 'client/package.json');
   const clientPackageJSON = getPackageJSON(clientPackageFilename);
-  clientPackageJSON.scripts = (clientPackageJSON.scripts ?? {});
   // Settings
-  clientPackageJSON.name = `client-for${appName}`;
+  clientPackageJSON.name = `client-for-${appName}`;
   clientPackageJSON.private = 'true';
   // Dev
   clientPackageJSON.scripts['dev:client'] = 'cross-env NODE_ENV=development BROWSER=none npm start';
   // Write
-  writePackageJSON(clientPackageFilename, topPackageJSON);
+  writePackageJSON(clientPackageFilename, clientPackageJSON);
 
   // Add env
   exec('cd client && npm i --save-dev cross-env');
