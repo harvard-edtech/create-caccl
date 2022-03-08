@@ -3,12 +3,20 @@
  * @author Gabe Abrams
  */
 const serverIndexContents = (
-`import initCACCL from 'caccl';
+`import initCACCL from 'caccl/server';
 
-// Initialize CACCL
-const app = await initCACCL({
-  // TODO: configure CACCL
-});
+/**
+ * Initialize app server
+ */
+const initServer = async () => {
+  // Initialize CACCL
+  const app = await initCACCL({
+    // TODO: configure CACCL
+  });
+};
+
+// Init server and display errors
+initServer();
 `
 );
 

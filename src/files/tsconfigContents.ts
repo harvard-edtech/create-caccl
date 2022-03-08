@@ -14,9 +14,9 @@ const tsconfigContents = (
     "sourceMap": true,
     "target": "es5",
     "lib": ["DOM", "ES5"],
-    "outDir": "./lib"
+    "outDir": "./build"
   },
-    "include": [
+  "include": [
     "./src"
   ],
   "ts-node": {

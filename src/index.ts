@@ -78,7 +78,16 @@ const createCACCL = () => {
 
   // Get the name of the app
   print.subtitle('What is the name of your app?');
-  const appName = prompt('App Name: ');
+  const appNameFull = prompt('App Name: ');
+  const appName = (
+    appNameFull
+      .toLowerCase()
+      .split(' ')
+      .map((part) => {
+        return part.replace(/[^A-Za-z]+/g, '');
+      })
+      .join('-')
+  );
   console.log('\n');
 
   // Print warning
@@ -158,7 +167,7 @@ const createCACCL = () => {
   // Settings
   topPackageJSON.private = 'true';
   // Prod
-  topPackageJSON.scripts.start = 'node ./server/lib/index.js';
+  topPackageJSON.scripts.start = 'node ./server/build/index.js';
   topPackageJSON.scripts.postinstall = 'cd client && npm install && cd ../server && npm install';
   topPackageJSON.scripts.build = 'cd client && npm run build && cd ../server && npm run build';
   // Dev
@@ -196,12 +205,15 @@ const createCACCL = () => {
   const clientPackageJSON = getPackageJSON(clientPackageFilename);
   clientPackageJSON.scripts = (clientPackageJSON.scripts ?? {});
   // Settings
-  clientPackageJSON.name = `Client for ${appName}`;
+  clientPackageJSON.name = `client-for${appName}`;
   clientPackageJSON.private = 'true';
   // Dev
-  clientPackageJSON.scripts['dev:client'] = 'NODE_ENV=development npm start';
+  clientPackageJSON.scripts['dev:client'] = 'cross-env NODE_ENV=development BROWSER=none npm start';
   // Write
   writePackageJSON(clientPackageFilename, topPackageJSON);
+
+  // Add env
+  exec('cd client && npm i --save-dev cross-env');
 
   /*----------------------------------------*/
   /*                  CACCL                 */
@@ -228,13 +240,14 @@ const createCACCL = () => {
   exec('mkdir server');
   exec('cd server && npm init -y');
   exec('mkdir server/src');
+  exec('npm i --save-dev cross-env nodemon');
 
   // Perform update
   const serverPackageFilename = path.join(currDir, 'server/package.json');
   const serverPackageJSON = getPackageJSON(serverPackageFilename);
   serverPackageJSON.scripts = (serverPackageJSON.scripts ?? {});
   // Settings
-  serverPackageJSON.name = `Server for ${appName}`;
+  serverPackageJSON.name = `server-for-${appName}`;
   serverPackageJSON.private = 'true';
   // Prod
   serverPackageJSON.scripts.start = 'node ./server/build/index.js';
@@ -253,6 +266,7 @@ const createCACCL = () => {
 
   // Perform update
   exec(`cd server && npm i --save caccl`);
+  exec(`cd server && npm i --save-dev caccl-canvas-partial-simulator`);
 
   /*----------------------------------------*/
   /*               Typescript               */
