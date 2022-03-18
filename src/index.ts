@@ -242,7 +242,7 @@ const createCACCL = () => {
   exec('mkdir server');
   exec('cd server && npm init -y');
   exec('mkdir server/src');
-  exec('npm i --save-dev cross-env nodemon');
+  exec('npm i --save-dev cross-env nodemon @types/express @types/express-session');
 
   // Perform update
   const serverPackageFilename = path.join(currDir, 'server/package.json');
