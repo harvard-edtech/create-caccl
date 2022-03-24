@@ -253,7 +253,7 @@ const createCACCL = () => {
   serverPackageJSON.private = 'true';
   // Prod
   serverPackageJSON.scripts.start = 'node ./server/build/index.js';
-  serverPackageJSON.scripts.build = 'tsc --project ./tsconfig.json';
+  serverPackageJSON.scripts.build = 'npm i --production=false && tsc --project ./tsconfig.json';
   // Dev
   serverPackageJSON.scripts['dev:server'] = 'cross-env NODE_ENV=development nodemon --watch \'./**/*.ts\' --exec \'ts-node\' src/index.ts';
   // Write

@@ -1,6 +1,6 @@
 {
 	"name": "create-caccl",
-	"version": "2.0.3",
+	"version": "2.0.4",
 	"description": "Initializes a new caccl-based Canvas LTI app project.",
 	"main": "./lib/index.js",
 	"bin": {
@@ -8,7 +8,7 @@
 	},
 	"scripts": {
 		"start": "node ./lib/index.js",
-		"build": "tsc --project ./tsconfig.json"
+		"build": "npm i --production=false && tsc --project ./tsconfig.json"
 	},
 	"repository": {
 		"type": "git",
