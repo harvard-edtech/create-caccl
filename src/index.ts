@@ -241,7 +241,7 @@ const createCACCL = () => {
   // Perform update
   exec('mkdir server');
   exec('cd server && npm init -y');
-  exec('mkdir server/src');
+  exec('cd server && mkdir src');
   exec('cd server && npm i --save-dev cross-env nodemon @types/express @types/express-session');
 
   // Perform update
