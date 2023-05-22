@@ -174,7 +174,7 @@ const createCACCL = () => {
   topPackageJSON.scripts.postinstall = 'cd client && npm install && cd ../server && npm install';
   topPackageJSON.scripts.build = 'cd client && npm run build && cd ../server && npm run build';
   // Dev
-  topPackageJSON.scripts['dev:canvas'] = 'node ./node_modules/caccl-canvas-partial-simulator/lib/index.js';
+  topPackageJSON.scripts['dev:canvas'] = 'npx canvas-simulator-start';
   topPackageJSON.scripts['dev:server'] = 'cd server && npm run dev:server';
   topPackageJSON.scripts['dev:client'] = 'cd client && npm run dev:client';
   // Write
